@@ -24,7 +24,7 @@ Created file draft-ietf-grow-bmp-loc-rib.txt
 Diff/Changes
 ------------
 
-Normally use github to see the diffs, but you can use command line ```git diff```, standard ```diff```, ```colordiff``` or something better such as Jetbrains [IntelliJ](https://www.jetbrains.com/idea/) which will provide one of the best side by side diffs.  
+Normally use github to see the diffs but you can use command line ```git diff```, standard ```diff```, ```colordiff``` or something better such as Jetbrains [IntelliJ](https://www.jetbrains.com/idea/) which will provide one of the best side by side diffs.  
 
 Example using colordiff.  
 
