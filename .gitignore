@@ -1,0 +1,4 @@
+draft*[0-9]+.txt
+.DS_Store
+.idea
+old
