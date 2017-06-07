@@ -1,0 +1,718 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+        <!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
+        <!ENTITY IANA_PEER_TYPE_LOC_RIB "TBD">
+        <!ENTITY IANA_PEER_UP_INFO_TLV_TABLE_NAME "TBD">
+        ]>
+
+<?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
+<?rfc strict="yes" ?>
+<?rfc toc="yes"?>
+<?rfc tocdepth="4"?>
+<?rfc symrefs="yes"?>
+<?rfc sortrefs="yes" ?>
+<?rfc compact="yes" ?>
+<?rfc subcompact="no" ?>
+
+<rfc category="std" docName="draft-ietf-grow-bmp-loc-rib-00"
+     ipr="trust200902" submissionType="IETF"
+     updates="7854">
+
+    <front>
+        <title abbrev="BMP Local-RIB">
+            Support for Local RIB in BGP Monitoring Protocol (BMP)</title>
+
+        <author fullname="Tim Evens" initials="T" surname="Evens">
+            <organization>Cisco Systems</organization>
+
+            <address>
+
+                <postal>
+                    <street>2901 Third Avenue, Suite 600</street>
+                    <city>Seattle</city>
+                    <region>WA</region>
+                    <code>98121</code>
+                    <country>USA</country>
+                </postal>
+
+                <email>tievens@cisco.com</email>
+
+            </address>
+        </author>
+
+        <author fullname="Serpil Bayraktar" initials="S" surname="Bayraktar">
+            <organization>Cisco Systems</organization>
+
+            <address>
+
+                <postal>
+                    <street>3700 Cisco Way</street>
+                    <city>San Jose</city>
+                    <region>CA</region>
+                    <code>95134</code>
+                    <country>USA</country>
+                </postal>
+
+                <email>serpil@cisco.com</email>
+
+            </address>
+        </author>
+
+        <author fullname="Manish Bhardwaj" initials="M" surname="Bhardwaj">
+            <organization>Cisco Systems</organization>
+
+            <address>
+
+                <postal>
+                    <street>3700 Cisco Way</street>
+                    <city>San Jose</city>
+                    <region>CA</region>
+                    <code>95134</code>
+                    <country>USA</country>
+                </postal>
+
+                <email>manbhard@cisco.com</email>
+
+            </address>
+        </author>
+
+        <author fullname="Paolo Lucente" initials="P" surname="Lucente">
+            <organization>NTT Communications</organization>
+
+            <address>
+
+                <postal>
+                    <street>Siriusdreef 70-72</street>
+                    <city>Hoofddorp</city>
+                    <code>2132</code>
+                    <region>WT</region>
+                    <country>NL</country>
+                </postal>
+
+                <email>paolo@ntt.net</email>
+
+            </address>
+        </author>
+
+        <date year="2017"/>
+
+        <area>General</area>
+
+        <workgroup>Global Routing Operations</workgroup>
+        <keyword>BGP</keyword>
+        <keyword>BMP</keyword>
+        <keyword>evens</keyword>
+        <keyword>loc-rib</keyword>
+
+        <abstract>
+            <t>
+                The BGP Monitoring Protocol (BMP) defines access to the Adj-RIB-In
+                and locally originated routes (e.g. routes distributed into BGP from
+                protocols such as static) but not access to the BGP instance Loc-RIB.
+                This document updates the BGP Monitoring Protocol (BMP) RFC 7854 by
+                adding access to the BGP instance Local-RIB, as defined in RFC 4271
+                the routes that have been selected by the local BGP speaker's
+                Decision Process. These are the routes over all peers, locally
+                originated, and after best-path selection.
+            </t>
+        </abstract>
+    </front>
+
+    <middle>
+        <section title="Introduction" anchor="Introduction">
+            <t>
+                The BGP Monitoring Protocol (BMP) suggests that locally originated
+                routes are locally sourced routes, such as redistributed or otherwise
+                added routes to the BGP instance by the local router. It does not
+                specify routes that are in the BGP instance Loc-RIB, such as routes
+                after best-path selection.
+            </t>
+            <t>
+                <xref target="FigAdjRibInLocRib"/> shows the flow of received routes from one or more BGP peers
+                into the Loc-RIB.
+            </t>
+
+            <figure align="center" anchor="FigAdjRibInLocRib"
+                    title="BGP peering Adj-RIBs-In into Loc-RIB">
+                <artwork align="center"><![CDATA[
+    +------------------+      +------------------+
+    | Peer-A           |      | Peer-B           |
+/-- |                  | ---- |                  | --\
+|   | Adj-RIB-In (Pre) |      | Adj-RIB-In (Pre) |   |
+|   +------------------+      +------------------+   |
+|                 |                         |        |
+| Filters/Policy -|         Filters/Policy -|        |
+|                 V                         V        |
+|   +------------------       +------------------+   |
+|   | Adj-RIB-In (Post)|      | Adj-RIB-In (Post)|   |
+|   +------------------       +------------------+   |
+|                |                          |        |
+|      Selected -|                Selected -|        |
+|                V                          V        |
+|    +-----------------------------------------+     |
+|    |                 Loc-RIB                 |     |
+|    +-----------------------------------------+     |
+|                                                    |
+| ROUTER/BGP Instance                                |
+\----------------------------------------------------/
+]]></artwork>
+            </figure>
+
+            <t>
+                As shown in <xref target="FigLocallyOriginated"></xref>, Locally originated follows a similar flow where
+                the redistributed or otherwise originated routes get installed into
+                the Loc-RIB based on the decision process selection.
+            </t>
+
+            <figure align="center" anchor="FigLocallyOriginated"
+                    title="Locally Originated into Loc-RIB">
+                <artwork align="center"><![CDATA[
+/--------------------------------------------------------\
+|                                                        |
+| +----------+  +----------+  +----------+  +----------+ |
+| |  IS-IS   |  |   OSPF   |  |  Static  |  |    BGP   | |
+| +----------+  +----------+  +----------+  +----------+ |
+|       |            |             |              |      |
+|       |                                         |      |
+|       |  Redistributed or originated into BGP   |      |
+|       |                                         |      |
+|       |            |             |              |      |
+|       V            V             V              V      |
+|    +----------------------------------------------+    |
+|    |                 Loc-RIB                      |    |
+|    +----------------------------------------------+    |
+|                                                        |
+| ROUTER/BGP Instance                                    |
+\--------------------------------------------------------/
+]]></artwork>
+            </figure>
+
+            <t>
+                BGP instance Loc-RIB usually provides a similar, if not exact,
+                forwarding information base (FIB) view of the routes from BGP that
+                the router will use. The following are some use-cases for Loc-RIB
+                access:
+            </t>
+
+            <t>
+                <list style="symbols">
+                    <t>
+                        Adj-RIBs-In Post-Policy may still contain hundreds of thousands
+                        of routes per-peer but only a handful are selected and
+                        installed in the Loc-RIB as part of the best-path selection.
+                        Some monitoring applications, such as ones that need only to
+                        correlate flow records to Loc-RIB entries, only need to collect
+                        and monitor the routes that are actually selected and used.
+
+                        <vspace blankLines="1"/>
+
+                        Requiring the applications to collect all Adj-RIB-In Post-Policy
+                        data forces the applications to receive a potentially
+                        large unwanted data set and to perform the BGP decision process
+                        selection, which includes having access to the IGP next-hop
+                        metrics. While it is possible to obtain the IGP topology
+                        information using BGP-LS, it requires the application to
+                        implement SPF and possibly CSPF based on additional policies.
+                        This is overly complex for such a simple application that only
+                        needed to have access to the Loc-RIB.
+                    </t>
+                    <t>
+                        It is common to see frequent changes over many BGP peers, but
+                        those changes do not always result in the router's Loc-RIB
+                        changing. The change in the Loc-RIB can have a direct impact
+                        on the forwarding state. It can greatly reduce time to
+                        troubleshoot and resolve issues if operators had the history of
+                        Loc-RIB changes. For example, a performance issue might have
+                        been seen for only a duration of 5 minutes. Post
+                        troubleshooting this issue without Loc-RIB history hides any
+                        decision based routing changes that might have happened during
+                        those five minutes.
+                    </t>
+                    <t>
+                        Operators may wish to validate the impact of policies applied
+                        to Adj-RIB-In by analyzing the final decision made by the
+                        router when installing into the Loc-RIB. For example, in order
+                        to validate if multi-path prefixes are installed as expected
+                        for all advertising peers, the Adj-RIB-In Post-Policy and Loc-RIB
+                        needs to be compared. This is only possible if the Loc-RIB
+                        is available. Monitoring the Adj-RIB-In for this router from
+                        another router to derive the Loc-RIB is likely to not show same
+                        installed prefixes. For example, the received Adj-RIB-In will
+                        be different if add-paths is not enabled or if maximum number
+                        of equal paths are different from Loc-RIB to routes
+                        advertised.
+                    </t>
+                </list>
+            </t>
+
+            <t>
+                This document adds Loc-RIB to the BGP Monitoring Protocol and
+                replaces <xref target="RFC7854">Section 8.2</xref> Locally Originated Routes.
+            </t>
+
+            <section title="Current Method to Monitor Loc-RIB">
+                <t>
+                    Loc-RIB is used to build Adj-RIB-Out when advertising routes to a
+                    peer. It is therefore possible to derive the Loc-RIB of a router by
+                    monitoring the Adj-RIB-In Pre-Policy from another router. While it
+                    is possible to derive the Loc-RIB, it is also error prone and
+                    complex.
+
+                    <vspace blankLines="1"/>
+
+                    The setup needed to monitor the Loc-RIB of a router requires another
+                    router with a peering session to the target router that is to be
+                    monitored. The target router Loc-RIB is advertised via Adj-RIB-Out
+                    to the BMP router over a standard BGP peering session. The BMP
+                    router then forwards Adj-RIB-In Pre-Policy to the BMP receiver.
+                </t>
+                <t>
+                    The current method introduces the need for additional resources:
+
+                    <list style="symbols">
+                        <t>
+                            Requires at least two routers when only one router was to be
+                            monitored.
+                        </t>
+                        <t>
+                            Requires additional BGP peering to collect the received updates
+                            when peering may have not even been required in the first
+                            place. For example, VRF's with no peers, redistributed bgp-ls
+                            with no peers, segment routing egress peer engineering where no
+                            peers have link-state address family enabled.
+                        </t>
+                    </list>
+                </t>
+
+                <t>
+                    Complexities introduced with current method in order to derive
+                    (e.g. correlate) peer to router Loc-RIB:
+
+                    <list style="symbols">
+                        <t>
+                            Adj-RIB-Out received as Adj-RIB-In from another router may have
+                            a policy applied that filters, generates aggregates, suppresses
+                            more specifics, manipulates attributes, or filters routes. Not
+                            only does this invalidate the Loc-RIB view, it adds complexity
+                            when multiple BMP routers may have peering sessions to the same
+                            router. The BMP receiver user is left with the erroneous task of
+                            identifying which peering session is the best representative of
+                            the Loc-RIB.
+                        </t>
+                        <t>
+                            BGP peering is designed to work between administrative domains
+                            and therefore does not need to include internal system level
+                            information of each peering router (e.g. the system name or
+                            version information). In order to derive a Loc-RIB to a router,
+                            the router name or other system information is needed. The BMP
+                            receiver and user are forced to do some type of correlation using
+                            what information is available in the peering session (e.g. peering
+                            addresses, ASNs, and BGP-ID's). This leads to error prone
+                            correlations.
+                        </t>
+                        <t>
+                            The BGP-ID's and session addresses to router correlation
+                            requires additional data, such as router inventory. This
+                            additional data provides the BMP receiver the ability to map and
+                            correlate the BGP-ID's and/or session addresses, but requires the
+                            BMP receiver to somehow obtain this data outside of BMP. How this
+                            data is obtained and the accuracy of the data directly effects the
+                            integrity of the correlation.
+                        </t>
+                    </list>
+                </t>
+            </section>
+        </section>
+
+        <section title="Terminology">
+            <t>
+                The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+                "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+                document are to be interpreted as described in <xref target="RFC2119">RFC 2119</xref>.
+            </t>
+        </section>
+
+        <section title="Definitions">
+            <t>
+                <list style="symbols">
+                    <t>
+                        Adj-RIB-In: As defined in <xref target="RFC4271"/>, "The Adj-RIBs-In contains
+                        unprocessed routing information that has been advertised to the
+                        local BGP speaker by its peers." This is also referred to as the
+                        pre-policy Adj-RIB-In in this document.
+                    </t>
+                    <t>
+                        Adj-RIB-Out: As defined in <xref target="RFC4271"/>, "The Adj-RIBs-Out contains
+                        the routes for advertisement to specific peers by means of the
+                        local speaker's UPDATE messages."
+                    </t>
+                    <t>
+                        Loc-RIB: As defined in <xref target="RFC4271"/>, "The Loc-RIB contains the routes
+                        that have been selected by the local BGP speaker's Decision
+                        Process." It is further defined that the routes selected include
+                        locally originated and routes from all peers.
+                    </t>
+                    <t>
+                        Pre-Policy Adj-RIB-Out: The result before applying the outbound
+                        policy to an Adj-RIB-Out. This normally represents a similar view of the
+                        Loc-RIB but may contain additional routes based on BGP peering configuration.
+                    </t>
+                    <t>
+                        Post-Policy Adj-RIB-Out: The result of applying outbound policy to
+                        an Adj-RIB-Out. This MUST be what is actually sent to the peer.
+                    </t>
+                </list>
+            </t>
+        </section>
+
+        <section title="Per-Peer Header">
+            <section title="Peer Type" anchor="PeerType">
+                <t>
+                    This document defines the following new peer type:
+
+                    <list style="symbols">
+                        <t>
+                            Peer Type = &IANA_PEER_TYPE_LOC_RIB;: Loc-RIB Instance Peer
+                        </t>
+                    </list>
+                </t>
+            </section>
+
+            <section title="Peer Flags" anchor="PeerFlags">
+                <t>
+                    In <xref target="RFC7854">section 4.2</xref>, the "locally sourced routes" comment under the
+                    L flag description is removed.  Locally sourced routes MUST be
+                    conveyed using the Loc-RIB instance peer type.
+
+                    <vspace blankLines="1"/>
+
+                    The per-peer header flags for Loc-RIB Instance Peer type are defined
+                    as follows:
+                </t>
+                <figure align="center">
+                    <artwork align="center"><![CDATA[
+ 0 1 2 3 4 5 6 7
++-+-+-+-+-+-+-+-+
+|F|  Reserved   |
++-+-+-+-+-+-+-+-+
+]]></artwork>
+                </figure>
+
+                <t>
+                    <list style="symbols">
+                        <t>
+                            The F flag indicates that the Loc-RIB is filtered.  This
+                            indicates that the Loc-RIB does not represent the complete routing
+                            table.
+
+                            <vspace blankLines="1"/>
+
+                            The remaining bits are reserved for future use. They SHOULD be
+                            transmitted as 0 and their values MUST be ignored on receipt.
+                        </t>
+                    </list>
+                </t>
+            </section>
+        </section>
+
+        <section title="Loc-RIB Monitoring">
+            <t>
+                Loc-RIB contains all routes from BGP peers as well as any and all
+                routes redistributed or otherwise locally originated.  In this
+                context, only the BGP instance Loc-RIB is included.  Routes from
+                other routing protocols that have not been redistributed, originated by
+                or into BGP, or received via Adj-RIB-In are not considered.
+            </t>
+
+            <section title="Per-Peer Header">
+                <t>
+                    All peer messages that include a per-peer header MUST use the
+                    following values:
+
+                    <list style="symbols">
+                        <t>
+                            Peer Type: Set to &IANA_PEER_TYPE_LOC_RIB; to indicate Loc-RIB Instance Peer.
+                        </t>
+                        <t>
+                            Peer Distinguisher: Zero filled if the Loc-RIB represents the
+                            global instance.  Otherwise set to the route distinguisher or
+                            unique locally defined value of the particular instance the Loc-RIB belongs to.
+                        </t>
+                        <t>
+                            Peer Address: Zero-filled.  Remote peer address is not applicable.
+                            The V flag is not applicable with Local-RIB Instance peer type
+                            considering addresses are zero-filed.
+                        </t>
+                        <t>
+                            Peer AS: Set to the BGP instance global or default ASN value.
+                        </t>
+                        <t>
+                            Peer BGP ID: Set to the BGP instance global or RD (e.g. VRF)
+                            specific router-id.
+                        </t>
+                    </list>
+                </t>
+
+            </section>
+
+            <section title="Peer UP Notification" anchor="PeerUpNotify">
+                <t>
+                    Peer UP notifications follow <xref target="RFC7854">section 4.10</xref> with the
+                    following clarifications:
+
+                    <list style="symbols">
+                        <t>
+                            Local Address: Zero-filled, local address is not applicable.
+                        </t>
+                        <t>
+                            Local Port: Set to 0, local port is not applicable.
+                        </t>
+                        <t>
+                            Remote Port: Set to 0, remote port is not applicable.
+                        </t>
+                        <t>
+                            Sent OPEN Message: This is a fabricated BGP OPEN message.
+                            Capabilities MUST include 4-octet ASN and all necessary
+                            capabilities to represent the Loc-RIB route monitoring messages.
+                            Only include capabilities if they will be used for Loc-RIB
+                            monitoring messages.  For example, if add-paths is enabled for
+                            IPv6 and Loc-RIB contains additional paths, the add-paths
+                            capability should be included for IPv6.  In the case of add-paths,
+                            the capability intent of advertise, receive or both can be ignored
+                            since the presence of the capability indicates enough that add-
+                            paths will be used for IPv6.
+                        </t>
+                        <t>
+                            Received OPEN Message: Repeat of the same Sent Open Message.  The
+                            duplication allows the BMP receiver to use existing parsing.
+                        </t>
+
+                    </list>
+                </t>
+
+                <section title="Peer UP Information" anchor="PeerUpInfoTlv">
+                    <t>
+                        The following peer UP information TLV types are added:
+
+                        <list style="symbols">
+                            <t>
+                                Type = &IANA_PEER_UP_INFO_TLV_TABLE_NAME;: VRF/Table Name.  The Information field contains an
+                                ASCII string whose value MUST be equal to the value of the VRF or
+                                table name (e.g. RD instance name) being conveyed.  The string size
+                                MUST be within the range of 1 to 255 bytes.
+
+                                <vspace blankLines="1"/>
+
+                                The VRF/Table Name TLV is optionally included. For consistency, it
+                                is RECOMMENDED that the VRF/Table Name always be included.  The
+                                default value of "global" SHOULD be used for the default Loc-RIB
+                                instance with a zero-filled distinguisher.
+                            </t>
+                        </list>
+                    </t>
+                </section>
+            </section>
+
+            <section title="Peer Down Notification">
+                <t>
+                    Peer down notification SHOULD follow the <xref target="RFC7854">section 4.9</xref>
+                    reason 2.
+                </t>
+            </section>
+
+            <section title="Route Monitoring">
+                <t>
+                    Route Monitoring messages are used for initial synchronization of
+                    the Loc-RIB.  They are also used to convey incremental Loc-RIB
+                    changes.
+
+                    <vspace blankLines="1"/>
+
+                    As defined in <xref target="RFC7854">section 4.3</xref>, "Following the common BMP
+                    header and per-peer header is a BGP Update PDU."
+                </t>
+
+                <section title="ASN Encoding">
+                    <t>
+                        Loc-RIB route monitor messages MUST use 4-byte ASN encoding as indicated
+                        in <xref target="PeerUpNotify">PEER UP sent OPEN message</xref> capability.
+                    </t>
+                </section>
+
+                <section title="Granularity">
+                    <t>
+                        State compression and throttling maybe used by a BMP sender implementation
+                        to reduce the amount of route monitoring messages that are
+                        transmitted to BMP receivers.  With state compression, only the
+                        final resultant updates are sent.
+
+                        <vspace blankLines="1"/>
+
+                        For example, prefix 10.0.0.0/8 is updated in the Loc-RIB 5 times
+                        within 1 second. State compression of BMP route monitor messages
+                        results in only the final change being transmitted. The other 4
+                        changes are suppressed because they fall within the compression
+                        interval. If no compression was being used, all 5 updates would
+                        have been transmitted.
+
+                        <vspace blankLines="1"/>
+
+                        A BMP receiver SHOULD expect that Loc-RIB route monitoring granularity
+                        can be different by BMP sender implementation.
+                    </t>
+                </section>
+            </section>
+
+            <section title="Route Mirroring">
+                <t>
+                    Route mirroring is not applicable to Loc-RIB.
+                </t>
+            </section>
+
+            <section title="Statistics Report">
+                <t>
+                    Not all Stat Types are relevant to Loc-RIB.  The Stat Types that
+                    are relevant are listed below:
+
+                    <list style="symbols">
+                        <t>
+                            Stat Type = 8: (64-bit Gauge) Number of routes in Loc-RIB.
+                        </t>
+                        <t>
+                            Stat Type = 10: Number of routes in per-AFI/SAFI Loc-RIB.  The
+                            value is structured as: 2-byte AFI, 1-byte SAFI, followed by a 64-
+                            bit Gauge.
+                        </t>
+                    </list>
+                </t>
+            </section>
+        </section>
+
+        <section title="Other Considerations">
+            <section title="Loc-RIB Implementation">
+                <t>
+                    There are several methods to implement Loc-RIB efficiently.  In all
+                    methods, the implementation emulates a peer with Peer UP and DOWN
+                    messages to convey capabilities as well as Route Monitor messages to
+                    convey Loc-RIB.  In this sense, the peer that conveys the Loc-RIB is
+                    a local router emulated peer.
+                </t>
+
+                <section title="Multiple Loc-RIB Peers">
+                    <t>
+                        There MUST be multiple emulated peers for each Loc-RIB instance, such
+                        as with VRF's. The BMP receiver identifies the Loc-RIB's by the peer
+                        header distinguisher and BGP ID.  The BMP receiver uses the VRF/Table
+                        Name from the PEER UP information to associate a name to the Loc-RIB.
+
+                        <vspace blankLines="1"/>
+
+                        In some implementations, it might be required to have more than one
+                        emulated peer for Loc-RIB to convey different address families for
+                        the same Loc-RIB.  In this case, the peer distinguisher and BGP ID
+                        should be the same since it represents the same Loc-RIB instance.
+                        Each emulated peer instance MUST send a PEER UP with the OPEN message
+                        indicating the address family capabilities.  A BMP receiver MUST
+                        process these capabilities to know which peer belongs to which
+                        address family.
+                    </t>
+                </section>
+
+                <section title="Filtering Loc-RIB to BMP Receivers">
+                    <t>
+                        There maybe be use-cases where BMP receivers should only receive
+                        specific routes from Loc-RIB. For example, IPv4 unicast routes may
+                        include IBGP, EBGP, and IGP but only routes from EBGP should be sent
+                        to the BMP receiver.  Alternatively, it may be that only IBGP and
+                        EBGP that should be sent and IGP redistributed routes should be
+                        excluded.  In these cases where the Loc-RIB is filtered, the F flag
+                        is set to 1 to indicate to the BMP receiver that the Loc-RIB is
+                        filtered.
+                    </t>
+                </section>
+            </section>
+        </section>
+
+        <section title="Security Considerations">
+            <t>
+                It is not believed that this document adds any additional security
+                considerations.
+            </t>
+        </section>
+
+        <section title="IANA Considerations">
+            <t>
+                This document requests that IANA assign the following new parameters
+                to the <eref
+                          target="https://www.iana.org/assignments/bmp-parameters/bmp-parameters.xhtml">
+                BMP parameters name space</eref>.
+            </t>
+
+            <section title="BMP Peer Type">
+                <t>
+                    This document defines a new peer type (<xref target="PeerType"/>):
+
+                    <list style="symbols">
+                        <t>
+                            Peer Type = &IANA_PEER_TYPE_LOC_RIB;: Loc-RIB Instance Peer
+                        </t>
+                    </list>
+                </t>
+            </section>
+
+            <section title="BMP Peer Flags">
+                <t>
+                    This document defines a new flag (<xref target="PeerFlags"/>) and proposes that peer
+                    flags are specific to the peer type:
+
+                    <list style="symbols">
+                        <t>
+                            The F flag indicates that the Loc-RIB is filtered.  This indicates
+                            that the Loc-RIB does not represent the complete routing table.
+                        </t>
+                    </list>
+                </t>
+            </section>
+
+            <section title="Peer UP Information TLV">
+                <t>
+                    This document defines the following new BMP PEER UP informational
+                    message TLV types (<xref target="PeerUpInfoTlv"/>):
+
+                    <list style="symbols">
+                        <t>
+                            Type = &IANA_PEER_UP_INFO_TLV_TABLE_NAME;: VRF/Table Name.
+                            The Information field contains an ASCII string whose value MUST be equal to the
+                            value of the VRF or table name (e.g. RD instance name) being conveyed.
+                            The string size MUST be within the range of 1 to 255 bytes.
+                        </t>
+                    </list>
+                </t>
+            </section>
+        </section>
+
+
+    </middle>
+
+    <back>
+
+        <references title="Normative References">
+            &RFC2119;
+
+            <?rfc include="reference.RFC.4271.xml"?>
+        <?rfc include="reference.RFC.7854.xml"?>
+
+        </references>
+
+        <!--<references title="Informative References">-->
+            <!--<?rfc include="reference.I-D.draft-evens-grow-bmp-adj-rib-out-01.xml"?>-->
+        <!--</references>-->
+
+        <section anchor="Acknowledgements" title="Acknowledgements" numbered="no">
+            <t>
+                The authors would like to thank John Scudder for his valuable input.
+            </t>
+        </section>
+
+    </back>
+</rfc>
