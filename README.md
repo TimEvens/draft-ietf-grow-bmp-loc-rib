@@ -31,7 +31,8 @@ Example using colordiff.
 * Install colordiff: ```brew install colordiff```
 * Run: ```colordiff -bBu draft-evens-grow-bmp-loc-rib-00.txt draft-ietf-grow-bmp-loc-rib.txt```
 
-#####Example:
+##### Example:
+
 ```diff
 --- draft-evens-grow-bmp-loc-rib-00.txt	2017-05-23 09:30:56.000000000 -0700
 +++ draft-ietf-grow-bmp-loc-rib.txt	2017-06-07 10:27:41.000000000 -0700
