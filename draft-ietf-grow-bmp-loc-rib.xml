@@ -260,12 +260,53 @@
 
                     <vspace blankLines="1"/>
 
+                <figure align="center" anchor="FigCurLocRibMon"
+                        title="Current method to monitor Loc-RIB">
+                    <artwork align="center"><![CDATA[
+/------------------------------------------------------\
+|  ROUTER1 BGP Instance                                |
+|                                                      |
+|     +--------------------------------------------+   |
+|     |                 Loc-RIB                    |   |
+|     +--------------------------------------------+   |
+|                    |                    |            |
+|    +------------------+     +------------------+     |
+|    |   Peer-ROUTER2   |     |   Peer-ROUTER3   |     |
+|    | Adj-RIB-Out (Pre)|     | Adj-RIB-Out (Pre)|     |
+|    +------------------+     +------------------+     |
+|    Filters/Policy -|    Filters/Policy -|            |
+|                    V                    V            |
+|   +-------------------+     +-------------------+    |
+|   | Adj-RIB-Out (Post)|     | Adj-RIB-Out (Post)|    |
+|   +-------------------+     +-------------------+    |
+|              |                          |            |
+\------------- | ------------------------ | -----------/
+          BGP  |                     BGP  |
+          Peer |                     Peer |
+   +------------------+          +------------------+
+   |   Peer-ROUTER1   |          |   Peer-ROUTER1   |
+/--|                  |--\    /--|                  | --\
+|  | Adj-RIB-In (Pre) |  |    |  | Adj-RIB-In (Pre) |   |
+|  +------------------+  |    |  +------------------+   |
+|                        |    |                         |
+| ROUTER2/BGP Instance   |    | ROUTER3/BGP Instance    |
+\------------------------/    \-------------------------/
+            |                              |
+            v                              v
+    ROUTER2 BMP Feed               ROUTER3 BMP Feed
+]]></artwork>
+                </figure>
+
+                    <vspace blankLines="2"/>
+
                     The setup needed to monitor the Loc-RIB of a router requires another
                     router with a peering session to the target router that is to be
-                    monitored. The target router Loc-RIB is advertised via Adj-RIB-Out
+                    monitored. As shown in <xref target="FigCurLocRibMon"/>, the
+                    target router Loc-RIB is advertised via Adj-RIB-Out
                     to the BMP router over a standard BGP peering session. The BMP
                     router then forwards Adj-RIB-In Pre-Policy to the BMP receiver.
                 </t>
+
                 <t>
                     The current method introduces the need for additional resources:
 
