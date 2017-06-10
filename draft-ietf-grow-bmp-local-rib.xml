@@ -14,7 +14,7 @@
 <?rfc compact="yes" ?>
 <?rfc subcompact="no" ?>
 
-<rfc category="std" docName="draft-ietf-grow-bmp-loc-rib-00"
+<rfc category="std" docName="draft-ietf-grow-bmp-local-rib-00"
      ipr="trust200902" submissionType="IETF"
      updates="7854">
 
@@ -101,7 +101,7 @@
         <workgroup>Global Routing Operations</workgroup>
         <keyword>BGP</keyword>
         <keyword>BMP</keyword>
-        <keyword>evens</keyword>
+        <keyword>local-rib</keyword>
         <keyword>loc-rib</keyword>
 
         <abstract>
