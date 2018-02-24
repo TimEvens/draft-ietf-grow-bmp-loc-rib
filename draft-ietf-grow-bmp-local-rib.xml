@@ -2,7 +2,7 @@
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
         <!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
         <!ENTITY IANA_PEER_TYPE_LOC_RIB "TBD">
-        <!ENTITY IANA_PEER_UP_INFO_TLV_TABLE_NAME "TBD">
+        <!ENTITY IANA_PEER_INFO_TLV_TABLE_NAME "TBD">
         ]>
 
 <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
@@ -14,7 +14,7 @@
 <?rfc compact="yes" ?>
 <?rfc subcompact="no" ?>
 
-<rfc category="std" docName="draft-ietf-grow-bmp-local-rib-00"
+<rfc category="std" docName="draft-ietf-grow-bmp-local-rib-01"
      ipr="trust200902" submissionType="IETF"
      updates="7854">
 
@@ -94,7 +94,7 @@
             </address>
         </author>
 
-        <date year="2017"/>
+        <date year="2018"/>
 
         <area>General</area>
 
@@ -336,7 +336,7 @@
                             more specifics, manipulates attributes, or filters routes. Not
                             only does this invalidate the Loc-RIB view, it adds complexity
                             when multiple BMP routers may have peering sessions to the same
-                            router. The BMP receiver user is left with the erroneous task of
+                            router. The BMP receiver user is left with the error prone task of
                             identifying which peering session is the best representative of
                             the Loc-RIB.
                         </t>
@@ -409,6 +409,14 @@
         <section title="Per-Peer Header">
             <section title="Peer Type" anchor="PeerType">
                 <t>
+                    A new peer type is defined for Loc-RIB to distinguish that it
+                    represents Loc-RIB with or without RD and local instances.
+                    <xref target="RFC7854">Section 4.2</xref> defines a Local Instance Peer
+                    type, which is for the case of non-RD peers that have an instance
+                    identifier.
+                </t>
+
+                <t>
                     This document defines the following new peer type:
 
                     <list style="symbols">
@@ -417,6 +425,8 @@
                         </t>
                     </list>
                 </t>
+
+
             </section>
 
             <section title="Peer Flags" anchor="PeerFlags">
@@ -463,6 +473,20 @@
                 context, only the BGP instance Loc-RIB is included.  Routes from
                 other routing protocols that have not been redistributed, originated by
                 or into BGP, or received via Adj-RIB-In are not considered.
+            </t>
+
+            <t>
+                Loc-RIB in this context does not attempt to maintain a pre-policy and
+                post-policy representation. Loc-RIB is the selected and used routes, which
+                is equivalent to post-policy.
+
+                <vspace blankLines="1"/>
+
+                For example, VRF "Blue" imports several targets but filters out specific routes.
+                The end result of VRF "Blue" Loc-RIB is conveyed.  Even though the import is filtered,
+                the result is complete for VRF "Blue" Loc-RIB. The F flag is not set in this case
+                since the Loc-RIB is complete and not filtered to the BMP receiver.
+
             </t>
 
             <section title="Per-Peer Header">
@@ -537,7 +561,7 @@
 
                         <list style="symbols">
                             <t>
-                                Type = &IANA_PEER_UP_INFO_TLV_TABLE_NAME;: VRF/Table Name.  The Information field contains an
+                                Type = &IANA_PEER_INFO_TLV_TABLE_NAME;: VRF/Table Name.  The Information field contains an
                                 ASCII string whose value MUST be equal to the value of the VRF or
                                 table name (e.g. RD instance name) being conveyed.  The string size
                                 MUST be within the range of 1 to 255 bytes.
@@ -548,6 +572,8 @@
                                 is RECOMMENDED that the VRF/Table Name always be included.  The
                                 default value of "global" SHOULD be used for the default Loc-RIB
                                 instance with a zero-filled distinguisher.
+
+                                If the TLV is included, then it SHOULD also be included in the Peer Down notification.
                             </t>
                         </list>
                     </t>
@@ -559,6 +585,11 @@
                     Peer down notification SHOULD follow the <xref target="RFC7854">section 4.9</xref>
                     reason 2.
                 </t>
+
+                <t>
+                    The VRF/Table Name informational TLV SHOULD be included if it was in the Peer UP.
+                </t>
+
             </section>
 
             <section title="Route Monitoring">
@@ -582,7 +613,7 @@
 
                 <section title="Granularity">
                     <t>
-                        State compression and throttling maybe used by a BMP sender implementation
+                        State compression and throttling SHOULD be used by a BMP sender
                         to reduce the amount of route monitoring messages that are
                         transmitted to BMP receivers.  With state compression, only the
                         final resultant updates are sent.
@@ -722,7 +753,7 @@
 
                     <list style="symbols">
                         <t>
-                            Type = &IANA_PEER_UP_INFO_TLV_TABLE_NAME;: VRF/Table Name.
+                            Type = &IANA_PEER_INFO_TLV_TABLE_NAME;: VRF/Table Name.
                             The Information field contains an ASCII string whose value MUST be equal to the
                             value of the VRF or table name (e.g. RD instance name) being conveyed.
                             The string size MUST be within the range of 1 to 255 bytes.
