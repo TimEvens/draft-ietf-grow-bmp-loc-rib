@@ -249,9 +249,9 @@ Internet-Draft                BMP Local-RIB                February 2018
 
    Loc-RIB is used to build Adj-RIB-Out when advertising routes to a
    peer.  It is therefore possible to derive the Loc-RIB of a router by
-   monitoring the Adj-RIB-In Pre-Policy from another router.  While it
-   is possible to derive the Loc-RIB, it is also error prone and
-   complex.
+   monitoring the Adj-RIB-In Pre-Policy from another router.  At scale
+   this becomes overly complex and error prone.
+
 
 
 
