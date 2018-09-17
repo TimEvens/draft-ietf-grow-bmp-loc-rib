@@ -16,9 +16,9 @@ Generating text from xml
 > You'll do this each time you want to generate a text version
 
 ```
-tievens@$ xml2rfc draft-ietf-grow-bmp-loc-rib.xml --text
-Parsing file draft-ietf-grow-bmp-loc-rib.xml
-Created file draft-ietf-grow-bmp-loc-rib.txt
+tievens@$ xml2rfc draft-ietf-grow-bmp-local-rib.xml --text
+Parsing file draft-ietf-grow-bmp-local-rib.xml
+Created file draft-ietf-grow-bmp-local-rib.txt
 ```
 
 Diff/Changes
