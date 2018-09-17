@@ -12,7 +12,7 @@ Expires: March 21, 2019                                       P. Lucente
 
 
          Support for Local RIB in BGP Monitoring Protocol (BMP)
-                    draft-ietf-grow-bmp-local-rib-01
+                    draft-ietf-grow-bmp-local-rib-02
 
 Abstract
 
@@ -422,7 +422,7 @@ Internet-Draft                BMP Local-RIB               September 2018
 
    This document defines the following new peer type:
 
-   o  Peer Type = TBD: Loc-RIB Instance Peer
+   o  Peer Type = TBD1: Loc-RIB Instance Peer
 
 4.2.  Peer Flags
 
@@ -476,7 +476,7 @@ Internet-Draft                BMP Local-RIB               September 2018
    All peer messages that include a per-peer header MUST use the
    following values:
 
-   o  Peer Type: Set to TBD to indicate Loc-RIB Instance Peer.
+   o  Peer Type: Set to TBD1 to indicate Loc-RIB Instance Peer.
 
    o  Peer Distinguisher: Zero filled if the Loc-RIB represents the
       global instance.  Otherwise set to the route distinguisher or
@@ -528,7 +528,7 @@ Internet-Draft                BMP Local-RIB               September 2018
 
    The following peer UP information TLV types are added:
 
-   o  Type = TBD: VRF/Table Name.  The Information field contains an
+   o  Type = TBD2: VRF/Table Name.  The Information field contains an
       ASCII string whose value MUST be equal to the value of the VRF or
       table name (e.g.  RD instance name) being conveyed.  The string
       size MUST be within the range of 1 to 255 bytes.
@@ -663,7 +663,7 @@ Internet-Draft                BMP Local-RIB               September 2018
 
    This document defines a new peer type (Section 4.1):
 
-   o  Peer Type = TBD: Loc-RIB Instance Peer
+   o  Peer Type = TBD1: Loc-RIB Instance Peer
 
 
 
@@ -687,7 +687,7 @@ Internet-Draft                BMP Local-RIB               September 2018
    This document defines the following new BMP PEER UP informational
    message TLV types (Section 5.2.1):
 
-   o  Type = TBD: VRF/Table Name.  The Information field contains an
+   o  Type = TBD2: VRF/Table Name.  The Information field contains an
       ASCII string whose value MUST be equal to the value of the VRF or
       table name (e.g.  RD instance name) being conveyed.  The string
       size MUST be within the range of 1 to 255 bytes.
