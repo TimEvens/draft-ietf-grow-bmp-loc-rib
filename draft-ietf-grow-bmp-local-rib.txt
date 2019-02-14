@@ -526,7 +526,7 @@ Internet-Draft                BMP Local-RIB               September 2018
 
 5.2.1.  Peer UP Information
 
-   The following peer UP information TLV types are added:
+   The following peer UP information TLV type is added:
 
    o  Type = TBD2: VRF/Table Name.  The Information field contains an
       ASCII string whose value MUST be equal to the value of the VRF or
@@ -542,11 +542,16 @@ Internet-Draft                BMP Local-RIB               September 2018
 
 5.3.  Peer Down Notification
 
-   Peer down notification SHOULD follow the section 4.9 [RFC7854] reason
-   2.
+   Peer down notification SHOULD use reason code TBD3. Following the
+   reason is data in TLV format. The following peer Down information
+   TLV type is defined:
 
-   The VRF/Table Name informational TLV SHOULD be included if it was in
-   the Peer UP.
+   o  Type = TBD4: VRF/Table Name.  The Information field contains an
+      ASCII string whose value MUST be equal to the value of the VRF or
+      table name (e.g.  RD instance name) being conveyed.  The string
+      size MUST be within the range of 1 to 255 bytes. The VRF/Table
+      Name informational TLV SHOULD be included if it was in the Peer
+      UP.
 
 5.4.  Route Monitoring
 
