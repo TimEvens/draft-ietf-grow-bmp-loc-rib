@@ -3,6 +3,7 @@
         <!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
         <!ENTITY IANA_PEER_TYPE_LOC_RIB "TBD1">
         <!ENTITY IANA_PEER_INFO_TLV_TABLE_NAME "TBD2">
+        <!ENTITY IANA_PEER_DOWN_REASON_CODE "TBD3">
         ]>
 
 <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
@@ -94,7 +95,7 @@
             </address>
         </author>
 
-        <date year="2018"/>
+        <date year="2019"/>
 
         <area>General</area>
 
@@ -556,7 +557,7 @@
 
                 <section title="Peer UP Information" anchor="PeerUpInfoTlv">
                     <t>
-                        The following peer UP information TLV types are added:
+                        The following peer UP information TLV type is added:
 
                         <list style="symbols">
                             <t>
@@ -579,16 +580,21 @@
                 </section>
             </section>
 
-            <section title="Peer Down Notification">
+            <section title="Peer Down Notification" anchor="PeerDownReasonCode">
                 <t>
-                    Peer down notification SHOULD follow the <xref target="RFC7854">section 4.9</xref>
-                    reason 2.
-                </t>
+                    Peer down notification SHOULD use reason code &IANA_PEER_DOWN_REASON_CODE;. Following the reason is data
+		    in TLV format. The following peer Down information TLV type is defined:
 
-                <t>
-                    The VRF/Table Name informational TLV SHOULD be included if it was in the Peer UP.
+                    <list style="symbols">
+                    	<t>
+                                Type = &IANA_PEER_INFO_TLV_TABLE_NAME;: VRF/Table Name.  The Information field contains an
+                                ASCII string whose value MUST be equal to the value of the VRF or
+                                table name (e.g. RD instance name) being conveyed.  The string size
+                                MUST be within the range of 1 to 255 bytes. The VRF/Table Name
+				informational TLV SHOULD be included if it was in the Peer UP.
+                    	</t>
+                    </list>
                 </t>
-
             </section>
 
             <section title="Route Monitoring">
@@ -756,6 +762,18 @@
                             The Information field contains an ASCII string whose value MUST be equal to the
                             value of the VRF or table name (e.g. RD instance name) being conveyed.
                             The string size MUST be within the range of 1 to 255 bytes.
+                        </t>
+                    </list>
+                </t>
+            </section>
+
+            <section title="Peer Down Reason code">
+                <t>
+                    This document defines the following new BMP Peer Down reason code (<xref target="PeerDownReasonCode"/>):
+
+                    <list style="symbols">
+                        <t>
+                            Type = &IANA_PEER_DOWN_REASON_CODE;: Local system closed, TLV data follows.
                         </t>
                     </list>
                 </t>
