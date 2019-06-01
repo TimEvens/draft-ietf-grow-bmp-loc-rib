@@ -15,7 +15,7 @@
 <?rfc compact="yes" ?>
 <?rfc subcompact="no" ?>
 
-<rfc category="std" docName="draft-ietf-grow-bmp-local-rib-03"
+<rfc category="std" docName="draft-ietf-grow-bmp-local-rib-04"
      ipr="trust200902" submissionType="IETF"
      updates="7854">
 
@@ -458,7 +458,7 @@
 
                             <vspace blankLines="1"/>
 
-                            The remaining bits are reserved for future use. They SHOULD be
+                            The remaining bits are reserved for future use. They MUST be
                             transmitted as 0 and their values MUST be ignored on receipt.
                         </t>
                     </list>
@@ -570,10 +570,10 @@
 
                                 The VRF/Table Name TLV is optionally included. For consistency, it
                                 is RECOMMENDED that the VRF/Table Name always be included.  The
-                                default value of "global" SHOULD be used for the default Loc-RIB
+                                default value of "global" MUST be used for the default Loc-RIB
                                 instance with a zero-filled distinguisher.
 
-                                If the TLV is included, then it SHOULD also be included in the Peer Down notification.
+                                If the TLV is included, then it MUST also be included in the Peer Down notification.
                             </t>
                         </list>
                     </t>
@@ -582,7 +582,7 @@
 
             <section title="Peer Down Notification" anchor="PeerDownReasonCode">
                 <t>
-                    Peer down notification SHOULD use reason code &IANA_PEER_DOWN_REASON_CODE;. Following the reason is data
+                    Peer down notification MUST use reason code &IANA_PEER_DOWN_REASON_CODE;. Following the reason is data
 		    in TLV format. The following peer Down information TLV type is defined:
 
                     <list style="symbols">
@@ -591,7 +591,7 @@
                                 ASCII string whose value MUST be equal to the value of the VRF or
                                 table name (e.g. RD instance name) being conveyed.  The string size
                                 MUST be within the range of 1 to 255 bytes. The VRF/Table Name
-				informational TLV SHOULD be included if it was in the Peer UP.
+				informational TLV MUST be included if it was in the Peer UP.
                     	</t>
                     </list>
                 </t>
@@ -634,7 +634,7 @@
 
                         <vspace blankLines="1"/>
 
-                        A BMP receiver SHOULD expect that Loc-RIB route monitoring granularity
+                        A BMP receiver should expect that Loc-RIB route monitoring granularity
                         can be different by BMP sender implementation.
                     </t>
                 </section>
