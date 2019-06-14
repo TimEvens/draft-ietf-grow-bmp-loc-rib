@@ -15,7 +15,7 @@
 <?rfc compact="yes" ?>
 <?rfc subcompact="no" ?>
 
-<rfc category="std" docName="draft-ietf-grow-bmp-local-rib-04"
+<rfc category="std" docName="draft-ietf-grow-bmp-local-rib-05"
      ipr="trust200902" submissionType="IETF"
      updates="7854">
 
@@ -515,6 +515,12 @@
                             Peer BGP ID: Set to the BGP instance global or RD (e.g. VRF)
                             specific router-id.
                         </t>
+                        <t>
+			    Timestamp: The time when the encapsulated routes were installed in
+			    The Loc-RIB, expressed in seconds and microseconds since midnight
+			    (zero hour), January 1, 1970 (UTC).  If zero, the time is unavailable.
+			    Precision of the timestamp is implementation-dependent.
+                        </t>
                     </list>
                 </t>
 
@@ -799,7 +805,8 @@
 
         <section anchor="Acknowledgements" title="Acknowledgements" numbered="no">
             <t>
-                The authors would like to thank John Scudder and Jeff Haas for their valuable input.
+                The authors would like to thank John Scudder, Jeff Haas and Mukul Srivastava
+		for their valuable input.
             </t>
         </section>
 
