@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="US-ASCII"?>
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
         <!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
+        <!ENTITY RFC8174 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8174.xml">
         <!ENTITY IANA_PEER_TYPE_LOC_RIB "3">
         <!ENTITY IANA_PEER_INFO_TLV_TABLE_NAME "3">
         <!ENTITY IANA_PEER_DOWN_REASON_CODE "TBD3">
@@ -122,6 +123,10 @@
     <middle>
         <section title="Introduction" anchor="Introduction">
             <t>
+		This document defines a mechanism to monitor the BGP Local-RIB state
+		for multiple BGP instances without the need for one or more unneeded
+		BGP peering sessions. 
+
                 The BGP Monitoring Protocol (BMP) suggests that locally originated
                 routes are locally sourced routes, such as redistributed or otherwise
                 added routes to the BGP instance by the local router. It does not
@@ -160,9 +165,10 @@
             </figure>
 
             <t>
-                As shown in <xref target="FigLocallyOriginated"></xref>, Locally originated follows a similar flow where
-                the redistributed or otherwise originated routes get installed into
-                the Loc-RIB based on the decision process selection.
+                As shown in <xref target="FigLocallyOriginated"></xref>, Locally originated
+		<xref target="RFC4271">section 9.4</xref> follows a similar flow where the
+		redistributed or otherwise originated routes get installed into the Loc-RIB
+		based on the decision process selection.
             </t>
 
             <figure align="center" anchor="FigLocallyOriginated"
@@ -189,10 +195,7 @@
             </figure>
 
             <t>
-                BGP instance Loc-RIB usually provides a similar, if not exact,
-                forwarding information base (FIB) view of the routes from BGP that
-                the router will use. The following are some use-cases for Loc-RIB
-                access:
+                The following are some use-cases for Loc-RIB access:
             </t>
 
             <t>
@@ -367,15 +370,22 @@
 
         <section title="Terminology">
             <t>
-                The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-                "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
-                document are to be interpreted as described in <xref target="RFC2119">RFC 2119</xref>.
+		The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
+		NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",
+		"MAY", and "OPTIONAL" in this document are to be interpreted as
+		described in BCP 14 <xref target="RFC2119">RFC 2119</xref>
+		<xref target="RFC8174">RFC 8174</xref> when, and only when, they
+		appear in all capitals, as shown here.
             </t>
         </section>
 
         <section title="Definitions">
             <t>
                 <list style="symbols">
+                    <t>
+			BGP Instance: it refers to an instance of an instance of BGP-4 <xref target="RFC4271"/>
+			and considerations in <xref target="RFC7854">8.1</xref> do apply to it.
+                    </t>
                     <t>
                         Adj-RIB-In: As defined in <xref target="RFC4271"/>, "The Adj-RIBs-In contains
                         unprocessed routing information that has been advertised to the
@@ -388,8 +398,8 @@
                         local speaker's UPDATE messages."
                     </t>
                     <t>
-                        Loc-RIB: As defined in <xref target="RFC4271"/>, "The Loc-RIB contains the routes
-                        that have been selected by the local BGP speaker's Decision
+                        Loc-RIB: As defined in <xref target="RFC4271">section 9.4</xref>, "The Loc-RIB
+			contains the routes that have been selected by the local BGP speaker's Decision
                         Process." It is further defined that the routes selected include
                         locally originated and routes from all peers.
                     </t>
@@ -452,9 +462,9 @@
                 <t>
                     <list style="symbols">
                         <t>
-                            The F flag indicates that the Loc-RIB is filtered.  This
-                            indicates that the Loc-RIB does not represent the complete routing
-                            table.
+                            The F flag indicates that the Loc-RIB is filtered. This MUST be
+			    set when only a subset of Loc-RIB routes is sent to the BMP
+			    collector.
 
                             <vspace blankLines="1"/>
 
@@ -468,25 +478,17 @@
 
         <section title="Loc-RIB Monitoring">
             <t>
-                Loc-RIB contains all routes from BGP peers as well as any and all
-                routes redistributed or otherwise locally originated.  In this
-                context, only the BGP instance Loc-RIB is included.  Routes from
-                other routing protocols that have not been redistributed, originated by
-                or into BGP, or received via Adj-RIB-In are not considered.
-            </t>
-
-            <t>
-                Loc-RIB in this context does not attempt to maintain a pre-policy and
-                post-policy representation. Loc-RIB is the selected and used routes, which
-                is equivalent to post-policy.
+		The Loc-RIB contains all routes selected by the BGP protocol Decision Process
+		<xref target="RFC4271">section 9.1</xref>. These routes include those learned
+		from BGP peers via its Adj-RIBs-In post-policy, as well as routes learned by
+		other means <xref target="RFC4271">section 9.4</xref>. Examples of these
+		include redistribution of routes from other protocols into BGP or otherwise
+		locally originated (ie. aggregate routes).
 
                 <vspace blankLines="1"/>
 
-                For example, VRF "Blue" imports several targets but filters out specific routes.
-                The end result of VRF "Blue" Loc-RIB is conveyed.  Even though the import is filtered,
-                the result is complete for VRF "Blue" Loc-RIB. The F flag is not set in this case
-                since the Loc-RIB is complete and not filtered to the BMP receiver.
-
+		As mentioned in <xref target="PeerFlags"/> a subset of Loc-RIB routes MAY be
+		sent to a BMP collector by setting the F flag.
             </t>
 
             <section title="Per-Peer Header">
@@ -504,16 +506,17 @@
                             unique locally defined value of the particular instance the Loc-RIB belongs to.
                         </t>
                         <t>
-                            Peer Address: Zero-filled.  Remote peer address is not applicable.
-                            The V flag is not applicable with Local-RIB Instance peer type
-                            considering addresses are zero-filed.
+                            Peer Address: The remote IP address associated with the TCP session
+                            over which the encapsulated PDU was received. If zero-filled, the
+                            information is not available and setting the V flag is not
+                            applicable.
                         </t>
                         <t>
                             Peer AS: Set to the BGP instance global or default ASN value.
                         </t>
                         <t>
                             Peer BGP ID: Set to the BGP instance global or RD (e.g. VRF)
-                            specific router-id.
+                            specific router-id <xref target="RFC7854">section 1.1</xref>.
                         </t>
                         <t>
 			    Timestamp: The time when the encapsulated routes were installed in
@@ -557,7 +560,6 @@
                             Received OPEN Message: Repeat of the same Sent Open Message.  The
                             duplication allows the BMP receiver to use existing parsing.
                         </t>
-
                     </list>
                 </t>
 
@@ -648,7 +650,8 @@
 
             <section title="Route Mirroring">
                 <t>
-                    Route mirroring is not applicable to Loc-RIB.
+                    Route mirroring is not applicable to Loc-RIB and Route Mirroring
+		    messages SHOULD be ignored.
                 </t>
             </section>
 
@@ -710,7 +713,16 @@
                         EBGP that should be sent and IGP redistributed routes should be
                         excluded.  In these cases where the Loc-RIB is filtered, the F flag
                         is set to 1 to indicate to the BMP receiver that the Loc-RIB is
-                        filtered.
+                        filtered. If multiple filters are associated to the same Loc-RIB,
+			a Table Name MUST be used in order to allow a BMP receiver to make
+			the right associations.
+                    </t>
+                </section>
+                <section title="Changes to existing BMP sessions">
+                    <t>
+			In case of any change that results in the alteration of behaviour of
+			an existing BMP session, ie. changes to filtering and table names, the
+			session MUST be bounced with a Peer DOWN/Peer UP sequence.
                     </t>
                 </section>
             </section>
@@ -793,6 +805,7 @@
 
         <references title="Normative References">
             &RFC2119;
+            &RFC8174;
 
             <?rfc include="reference.RFC.4271.xml"?>
         <?rfc include="reference.RFC.7854.xml"?>
