@@ -321,7 +321,7 @@
                         <t>
                             Requires additional BGP peering to collect the received updates
                             when peering may have not even been required in the first
-                            place. For example, VRF's with no peers, redistributed bgp-ls
+                            place. For example, VRFs with no peers, redistributed BGP-LS
                             with no peers, segment routing egress peer engineering where no
                             peers have link-state address family enabled.
                         </t>
@@ -351,14 +351,14 @@
                             the router name or other system information is needed. The BMP
                             receiver and user are forced to do some type of correlation using
                             what information is available in the peering session (e.g. peering
-                            addresses, ASNs, and BGP-ID's). This leads to error prone
+                            addresses, ASNs, and BGP-IDs). This leads to error prone
                             correlations.
                         </t>
                         <t>
-                            The BGP-ID's and session addresses to router correlation
+                            The BGP-IDs and session addresses to router correlation
                             requires additional data, such as router inventory. This
                             additional data provides the BMP receiver the ability to map and
-                            correlate the BGP-ID's and/or session addresses, but requires the
+                            correlate the BGP-IDs and/or session addresses, but requires the
                             BMP receiver to somehow obtain this data outside of BMP. How this
                             data is obtained and the accuracy of the data directly effects the
                             integrity of the correlation.
@@ -687,7 +687,7 @@
                 <section title="Multiple Loc-RIB Peers">
                     <t>
                         There MUST be multiple emulated peers for each Loc-RIB instance, such
-                        as with VRF's. The BMP receiver identifies the Loc-RIB's by the peer
+                        as with VRFs. The BMP receiver identifies the Loc-RIB by the peer
                         header distinguisher and BGP ID.  The BMP receiver uses the VRF/Table
                         Name from the PEER UP information to associate a name to the Loc-RIB.
 
