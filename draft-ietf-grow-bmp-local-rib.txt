@@ -82,7 +82,7 @@ Table of Contents
      5.4.  Route Monitoring  . . . . . . . . . . . . . . . . . . . .  11
        5.4.1.  ASN Encoding  . . . . . . . . . . . . . . . . . . . .  11
        5.4.2.  Granularity . . . . . . . . . . . . . . . . . . . . .  11
-     5.5.  Route Mirroring . . . . . . . . . . . . . . . . . . . . .  11
+     5.5.  Route Mirroring . . . . . . . . . . . . . . . . . . . . .  12
      5.6.  Statistics Report . . . . . . . . . . . . . . . . . . . .  12
    6.  Other Considerations  . . . . . . . . . . . . . . . . . . . .  12
      6.1.  Loc-RIB Implementation  . . . . . . . . . . . . . . . . .  12
@@ -539,7 +539,7 @@ Internet-Draft                BMP Local-RIB                    July 2019
 
 5.2.1.  Peer UP Information
 
-   The following peer UP information TLV type is added:
+   The following Peer UP information TLV type is added:
 
    o  Type = 3: VRF/Table Name.  The Information field contains an ASCII
       string whose value MUST be equal to the value of the VRF or table
@@ -561,6 +561,10 @@ Evens, et al.           Expires January 18, 2020               [Page 10]
 
 Internet-Draft                BMP Local-RIB                    July 2019
 
+
+   Multiple TLVs of the same type can be repeated as part of the same
+   message, for example to convey a filtered view of a VRF.  TLVs can be
+   sent in any order.
 
 5.3.  Peer Down Notification
 
@@ -604,10 +608,6 @@ Internet-Draft                BMP Local-RIB                    July 2019
    A BMP receiver should expect that Loc-RIB route monitoring
    granularity can be different by BMP sender implementation.
 
-5.5.  Route Mirroring
-
-   Route mirroring is not applicable to Loc-RIB and Route Mirroring
-   messages SHOULD be ignored.
 
 
 
@@ -617,6 +617,11 @@ Evens, et al.           Expires January 18, 2020               [Page 11]
 
 Internet-Draft                BMP Local-RIB                    July 2019
 
+
+5.5.  Route Mirroring
+
+   Route mirroring is not applicable to Loc-RIB and Route Mirroring
+   messages SHOULD be ignored.
 
 5.6.  Statistics Report
 
@@ -661,11 +666,6 @@ Internet-Draft                BMP Local-RIB                    July 2019
    There maybe be use-cases where BMP receivers should only receive
    specific routes from Loc-RIB.  For example, IPv4 unicast routes may
    include IBGP, EBGP, and IGP but only routes from EBGP should be sent
-   to the BMP receiver.  Alternatively, it may be that only IBGP and
-   EBGP that should be sent and IGP redistributed routes should be
-   excluded.  In these cases where the Loc-RIB is filtered, the F flag
-   is set to 1 to indicate to the BMP receiver that the Loc-RIB is
-   filtered.  If multiple filters are associated to the same Loc-RIB, a
 
 
 
@@ -674,6 +674,11 @@ Evens, et al.           Expires January 18, 2020               [Page 12]
 Internet-Draft                BMP Local-RIB                    July 2019
 
 
+   to the BMP receiver.  Alternatively, it may be that only IBGP and
+   EBGP that should be sent and IGP redistributed routes should be
+   excluded.  In these cases where the Loc-RIB is filtered, the F flag
+   is set to 1 to indicate to the BMP receiver that the Loc-RIB is
+   filtered.  If multiple filters are associated to the same Loc-RIB, a
    Table Name MUST be used in order to allow a BMP receiver to make the
    right associations.
 
@@ -717,11 +722,6 @@ Internet-Draft                BMP Local-RIB                    July 2019
 
    o  Type = 3: VRF/Table Name.  The Information field contains an ASCII
       string whose value MUST be equal to the value of the VRF or table
-      name (e.g.  RD instance name) being conveyed.  The string size
-      MUST be within the range of 1 to 255 bytes.
-
-
-
 
 
 
@@ -729,6 +729,9 @@ Evens, et al.           Expires January 18, 2020               [Page 13]
 
 Internet-Draft                BMP Local-RIB                    July 2019
 
+
+      name (e.g.  RD instance name) being conveyed.  The string size
+      MUST be within the range of 1 to 255 bytes.
 
 8.4.  Peer Down Reason code
 
@@ -771,9 +774,6 @@ Acknowledgements
    Srivastava for their valuable input.
 
 Authors' Addresses
-
-
-
 
 
 

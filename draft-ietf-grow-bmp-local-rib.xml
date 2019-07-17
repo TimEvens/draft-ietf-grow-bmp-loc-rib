@@ -565,7 +565,7 @@
 
                 <section title="Peer UP Information" anchor="PeerUpInfoTlv">
                     <t>
-                        The following peer UP information TLV type is added:
+                        The following Peer UP information TLV type is added:
 
                         <list style="symbols">
                             <t>
@@ -584,6 +584,9 @@
                                 If the TLV is included, then it MUST also be included in the Peer Down notification.
                             </t>
                         </list>
+
+			Multiple TLVs of the same type can be repeated as part of the same message,
+			for example to convey a filtered view of a VRF. TLVs can be sent in any order.
                     </t>
                 </section>
             </section>
