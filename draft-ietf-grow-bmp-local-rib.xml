@@ -586,7 +586,10 @@
                         </list>
 
 			Multiple TLVs of the same type can be repeated as part of the same message,
-			for example to convey a filtered view of a VRF.
+			for example to convey a filtered view of a VRF. A BMP receiver should append
+			multiple TLVs of the same type to a set in order to support alternate or
+			additional names for the same peer. If multiple strings are included, their
+			ordering MUST be preserved when they are reported.
                     </t>
                 </section>
             </section>
