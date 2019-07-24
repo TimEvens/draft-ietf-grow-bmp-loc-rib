@@ -6,9 +6,9 @@ Global Routing Operations                                       T. Evens
 Internet-Draft                                              S. Bayraktar
 Updates: 7854 (if approved)                                  M. Bhardwaj
 Intended status: Standards Track                           Cisco Systems
-Expires: January 12, 2020                                     P. Lucente
+Expires: January 24, 2020                                     P. Lucente
                                                       NTT Communications
-                                                           July 11, 2019
+                                                           July 23, 2019
 
 
          Support for Local RIB in BGP Monitoring Protocol (BMP)
@@ -40,7 +40,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on January 12, 2020.
+   This Internet-Draft will expire on January 24, 2020.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Evens, et al.           Expires January 12, 2020                [Page 1]
+Evens, et al.           Expires January 24, 2020                [Page 1]
 
 Internet-Draft                BMP Local-RIB                    July 2019
 
@@ -82,7 +82,7 @@ Table of Contents
      5.4.  Route Monitoring  . . . . . . . . . . . . . . . . . . . .  11
        5.4.1.  ASN Encoding  . . . . . . . . . . . . . . . . . . . .  11
        5.4.2.  Granularity . . . . . . . . . . . . . . . . . . . . .  11
-     5.5.  Route Mirroring . . . . . . . . . . . . . . . . . . . . .  11
+     5.5.  Route Mirroring . . . . . . . . . . . . . . . . . . . . .  12
      5.6.  Statistics Report . . . . . . . . . . . . . . . . . . . .  12
    6.  Other Considerations  . . . . . . . . . . . . . . . . . . . .  12
      6.1.  Loc-RIB Implementation  . . . . . . . . . . . . . . . . .  12
@@ -94,7 +94,7 @@ Table of Contents
      8.1.  BMP Peer Type . . . . . . . . . . . . . . . . . . . . . .  13
      8.2.  BMP Peer Flags  . . . . . . . . . . . . . . . . . . . . .  13
      8.3.  Peer UP Information TLV . . . . . . . . . . . . . . . . .  13
-     8.4.  Peer Down Reason code . . . . . . . . . . . . . . . . . .  13
+     8.4.  Peer Down Reason code . . . . . . . . . . . . . . . . . .  14
    9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  14
      9.1.  Normative References  . . . . . . . . . . . . . . . . . .  14
      9.2.  URIs  . . . . . . . . . . . . . . . . . . . . . . . . . .  14
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Evens, et al.           Expires January 12, 2020                [Page 2]
+Evens, et al.           Expires January 24, 2020                [Page 2]
 
 Internet-Draft                BMP Local-RIB                    July 2019
 
@@ -145,7 +145,7 @@ Internet-Draft                BMP Local-RIB                    July 2019
 
               Figure 1: BGP peering Adj-RIBs-In into Loc-RIB
 
-   As shown in Figure 2, Locally originated section 9.4 [RFC4271]
+   As shown in Figure 2, Locally originated section 9.4 of [RFC4271]
    follows a similar flow where the redistributed or otherwise
    originated routes get installed into the Loc-RIB based on the
    decision process selection.
@@ -165,7 +165,7 @@ Internet-Draft                BMP Local-RIB                    July 2019
 
 
 
-Evens, et al.           Expires January 12, 2020                [Page 3]
+Evens, et al.           Expires January 24, 2020                [Page 3]
 
 Internet-Draft                BMP Local-RIB                    July 2019
 
@@ -221,7 +221,7 @@ Internet-Draft                BMP Local-RIB                    July 2019
 
 
 
-Evens, et al.           Expires January 12, 2020                [Page 4]
+Evens, et al.           Expires January 24, 2020                [Page 4]
 
 Internet-Draft                BMP Local-RIB                    July 2019
 
@@ -239,7 +239,7 @@ Internet-Draft                BMP Local-RIB                    July 2019
       different from Loc-RIB to routes advertised.
 
    This document adds Loc-RIB to the BGP Monitoring Protocol and
-   replaces Section 8.2 [RFC7854] Locally Originated Routes.
+   replaces Section 8.2 of [RFC7854] Locally Originated Routes.
 
 1.1.  Current Method to Monitor Loc-RIB
 
@@ -277,7 +277,7 @@ Internet-Draft                BMP Local-RIB                    July 2019
 
 
 
-Evens, et al.           Expires January 12, 2020                [Page 5]
+Evens, et al.           Expires January 24, 2020                [Page 5]
 
 Internet-Draft                BMP Local-RIB                    July 2019
 
@@ -333,14 +333,14 @@ Internet-Draft                BMP Local-RIB                    July 2019
 
 
 
-Evens, et al.           Expires January 12, 2020                [Page 6]
+Evens, et al.           Expires January 24, 2020                [Page 6]
 
 Internet-Draft                BMP Local-RIB                    July 2019
 
 
    o  Requires additional BGP peering to collect the received updates
       when peering may have not even been required in the first place.
-      For example, VRF's with no peers, redistributed bgp-ls with no
+      For example, VRFs with no peers, redistributed BGP-LS with no
       peers, segment routing egress peer engineering where no peers have
       link-state address family enabled.
 
@@ -363,14 +363,14 @@ Internet-Draft                BMP Local-RIB                    July 2019
       the router name or other system information is needed.  The BMP
       receiver and user are forced to do some type of correlation using
       what information is available in the peering session (e.g. peering
-      addresses, ASNs, and BGP-ID's).  This leads to error prone
+      addresses, ASNs, and BGP-IDs).  This leads to error prone
       correlations.
 
-   o  The BGP-ID's and session addresses to router correlation requires
+   o  The BGP-IDs and session addresses to router correlation requires
       additional data, such as router inventory.  This additional data
       provides the BMP receiver the ability to map and correlate the
-      BGP-ID's and/or session addresses, but requires the BMP receiver
-      to somehow obtain this data outside of BMP.  How this data is
+      BGP-IDs and/or session addresses, but requires the BMP receiver to
+      somehow obtain this data outside of BMP.  How this data is
       obtained and the accuracy of the data directly effects the
       integrity of the correlation.
 
@@ -389,7 +389,7 @@ Internet-Draft                BMP Local-RIB                    July 2019
 
 
 
-Evens, et al.           Expires January 12, 2020                [Page 7]
+Evens, et al.           Expires January 24, 2020                [Page 7]
 
 Internet-Draft                BMP Local-RIB                    July 2019
 
@@ -397,7 +397,8 @@ Internet-Draft                BMP Local-RIB                    July 2019
 3.  Definitions
 
    o  BGP Instance: it refers to an instance of an instance of BGP-4
-      [RFC4271] and considerations in 8.1 [RFC7854] do apply to it.
+      [RFC4271] and considerations in section 8.1 of [RFC7854] do apply
+      to it.
 
    o  Adj-RIB-In: As defined in [RFC4271], "The Adj-RIBs-In contains
       unprocessed routing information that has been advertised to the
@@ -408,7 +409,7 @@ Internet-Draft                BMP Local-RIB                    July 2019
       the routes for advertisement to specific peers by means of the
       local speaker's UPDATE messages."
 
-   o  Loc-RIB: As defined in section 9.4 [RFC4271], "The Loc-RIB
+   o  Loc-RIB: As defined in section 9.4 of [RFC4271], "The Loc-RIB
       contains the routes that have been selected by the local BGP
       speaker's Decision Process."  It is further defined that the
       routes selected include locally originated and routes from all
@@ -428,7 +429,7 @@ Internet-Draft                BMP Local-RIB                    July 2019
 
    A new peer type is defined for Loc-RIB to distinguish that it
    represents Loc-RIB with or without RD and local instances.
-   Section 4.2 [RFC7854] defines a Local Instance Peer type, which is
+   Section 4.2 of [RFC7854] defines a Local Instance Peer type, which is
    for the case of non-RD peers that have an instance identifier.
 
    This document defines the following new peer type:
@@ -437,15 +438,14 @@ Internet-Draft                BMP Local-RIB                    July 2019
 
 4.2.  Peer Flags
 
-   In section 4.2 [RFC7854], the "locally sourced routes" comment under
-   the L flag description is removed.  Locally sourced routes MUST be
-   conveyed using the Loc-RIB instance peer type.
+   In section 4.2 of [RFC7854], the "locally sourced routes" comment
+   under the L flag description is removed.  Locally sourced routes MUST
+   be conveyed using the Loc-RIB instance peer type.
 
 
 
 
-
-Evens, et al.           Expires January 12, 2020                [Page 8]
+Evens, et al.           Expires January 24, 2020                [Page 8]
 
 Internet-Draft                BMP Local-RIB                    July 2019
 
@@ -468,9 +468,9 @@ Internet-Draft                BMP Local-RIB                    July 2019
 5.  Loc-RIB Monitoring
 
    The Loc-RIB contains all routes selected by the BGP protocol Decision
-   Process section 9.1 [RFC4271].  These routes include those learned
+   Process section 9.1 of [RFC4271].  These routes include those learned
    from BGP peers via its Adj-RIBs-In post-policy, as well as routes
-   learned by other means section 9.4 [RFC4271].  Examples of these
+   learned by other means section 9.4 of [RFC4271].  Examples of these
    include redistribution of routes from other protocols into BGP or
    otherwise locally originated (ie. aggregate routes).
 
@@ -497,11 +497,11 @@ Internet-Draft                BMP Local-RIB                    July 2019
    o  Peer AS: Set to the BGP instance global or default ASN value.
 
    o  Peer BGP ID: Set to the BGP instance global or RD (e.g.  VRF)
-      specific router-id section 1.1 [RFC7854].
+      specific router-id section 1.1 of [RFC7854].
 
 
 
-Evens, et al.           Expires January 12, 2020                [Page 9]
+Evens, et al.           Expires January 24, 2020                [Page 9]
 
 Internet-Draft                BMP Local-RIB                    July 2019
 
@@ -514,7 +514,7 @@ Internet-Draft                BMP Local-RIB                    July 2019
 
 5.2.  Peer UP Notification
 
-   Peer UP notifications follow section 4.10 [RFC7854] with the
+   Peer UP notifications follow section 4.10 of [RFC7854] with the
    following clarifications:
 
    o  Local Address: Zero-filled, local address is not applicable.
@@ -539,7 +539,7 @@ Internet-Draft                BMP Local-RIB                    July 2019
 
 5.2.1.  Peer UP Information
 
-   The following peer UP information TLV type is added:
+   The following Peer UP information TLV type is added:
 
    o  Type = 3: VRF/Table Name.  The Information field contains an ASCII
       string whose value MUST be equal to the value of the VRF or table
@@ -557,10 +557,17 @@ Internet-Draft                BMP Local-RIB                    July 2019
 
 
 
-Evens, et al.           Expires January 12, 2020               [Page 10]
+Evens, et al.           Expires January 24, 2020               [Page 10]
 
 Internet-Draft                BMP Local-RIB                    July 2019
 
+
+   Multiple TLVs of the same type can be repeated as part of the same
+   message, for example to convey a filtered view of a VRF.  A BMP
+   receiver should append multiple TLVs of the same type to a set in
+   order to support alternate or additional names for the same peer.  If
+   multiple strings are included, their ordering MUST be preserved when
+   they are reported.
 
 5.3.  Peer Down Notification
 
@@ -579,8 +586,8 @@ Internet-Draft                BMP Local-RIB                    July 2019
    Route Monitoring messages are used for initial synchronization of the
    Loc-RIB.  They are also used to convey incremental Loc-RIB changes.
 
-   As defined in section 4.3 [RFC7854], "Following the common BMP header
-   and per-peer header is a BGP Update PDU."
+   As defined in section 4.3 of [RFC7854], "Following the common BMP
+   header and per-peer header is a BGP Update PDU."
 
 5.4.1.  ASN Encoding
 
@@ -604,19 +611,17 @@ Internet-Draft                BMP Local-RIB                    July 2019
    A BMP receiver should expect that Loc-RIB route monitoring
    granularity can be different by BMP sender implementation.
 
+
+
+Evens, et al.           Expires January 24, 2020               [Page 11]
+
+Internet-Draft                BMP Local-RIB                    July 2019
+
+
 5.5.  Route Mirroring
 
    Route mirroring is not applicable to Loc-RIB and Route Mirroring
    messages SHOULD be ignored.
-
-
-
-
-
-Evens, et al.           Expires January 12, 2020               [Page 11]
-
-Internet-Draft                BMP Local-RIB                    July 2019
-
 
 5.6.  Statistics Report
 
@@ -642,7 +647,7 @@ Internet-Draft                BMP Local-RIB                    July 2019
 6.1.1.  Multiple Loc-RIB Peers
 
    There MUST be multiple emulated peers for each Loc-RIB instance, such
-   as with VRF's.  The BMP receiver identifies the Loc-RIB's by the peer
+   as with VRFs.  The BMP receiver identifies the Loc-RIB by the peer
    header distinguisher and BGP ID.  The BMP receiver uses the VRF/
    Table Name from the PEER UP information to associate a name to the
    Loc-RIB.
@@ -661,19 +666,19 @@ Internet-Draft                BMP Local-RIB                    July 2019
    There maybe be use-cases where BMP receivers should only receive
    specific routes from Loc-RIB.  For example, IPv4 unicast routes may
    include IBGP, EBGP, and IGP but only routes from EBGP should be sent
+
+
+
+Evens, et al.           Expires January 24, 2020               [Page 12]
+
+Internet-Draft                BMP Local-RIB                    July 2019
+
+
    to the BMP receiver.  Alternatively, it may be that only IBGP and
    EBGP that should be sent and IGP redistributed routes should be
    excluded.  In these cases where the Loc-RIB is filtered, the F flag
    is set to 1 to indicate to the BMP receiver that the Loc-RIB is
    filtered.  If multiple filters are associated to the same Loc-RIB, a
-
-
-
-Evens, et al.           Expires January 12, 2020               [Page 12]
-
-Internet-Draft                BMP Local-RIB                    July 2019
-
-
    Table Name MUST be used in order to allow a BMP receiver to make the
    right associations.
 
@@ -685,8 +690,11 @@ Internet-Draft                BMP Local-RIB                    July 2019
 
 7.  Security Considerations
 
-   It is not believed that this document adds any additional security
-   considerations.
+   The same considerations as in section 11 of [RFC7854] apply to this
+   document.  Implementations of this protocol SHOULD require to
+   establish sessions with authorized and trusted monitoring devices.
+   It is also believed that this document does not add any additional
+   security considerations.
 
 8.  IANA Considerations
 
@@ -714,6 +722,14 @@ Internet-Draft                BMP Local-RIB                    July 2019
 
    o  Type = 3: VRF/Table Name.  The Information field contains an ASCII
       string whose value MUST be equal to the value of the VRF or table
+
+
+
+Evens, et al.           Expires January 24, 2020               [Page 13]
+
+Internet-Draft                BMP Local-RIB                    July 2019
+
+
       name (e.g.  RD instance name) being conveyed.  The string size
       MUST be within the range of 1 to 255 bytes.
 
@@ -721,14 +737,6 @@ Internet-Draft                BMP Local-RIB                    July 2019
 
    This document defines the following new BMP Peer Down reason code
    (Section 5.3):
-
-
-
-
-Evens, et al.           Expires January 12, 2020               [Page 13]
-
-Internet-Draft                BMP Local-RIB                    July 2019
-
 
    o  Type = TBD3: Local system closed, TLV data follows.
 
@@ -767,6 +775,17 @@ Acknowledgements
 
 Authors' Addresses
 
+
+
+
+
+
+
+Evens, et al.           Expires January 24, 2020               [Page 14]
+
+Internet-Draft                BMP Local-RIB                    July 2019
+
+
    Tim Evens
    Cisco Systems
    2901 Third Avenue, Suite 600
@@ -774,16 +793,6 @@ Authors' Addresses
    USA
 
    Email: tievens@cisco.com
-
-
-
-
-
-
-
-Evens, et al.           Expires January 12, 2020               [Page 14]
-
-Internet-Draft                BMP Local-RIB                    July 2019
 
 
    Serpil Bayraktar
@@ -828,13 +837,4 @@ Internet-Draft                BMP Local-RIB                    July 2019
 
 
 
-
-
-
-
-
-
-
-
-
-Evens, et al.           Expires January 12, 2020               [Page 15]
+Evens, et al.           Expires January 24, 2020               [Page 15]

@@ -166,7 +166,7 @@
 
             <t>
                 As shown in <xref target="FigLocallyOriginated"></xref>, Locally originated
-		<xref target="RFC4271">section 9.4</xref> follows a similar flow where the
+		<xref target="RFC4271">section 9.4 of</xref> follows a similar flow where the
 		redistributed or otherwise originated routes get installed into the Loc-RIB
 		based on the decision process selection.
             </t>
@@ -251,7 +251,7 @@
 
             <t>
                 This document adds Loc-RIB to the BGP Monitoring Protocol and
-                replaces <xref target="RFC7854">Section 8.2</xref> Locally Originated Routes.
+                replaces <xref target="RFC7854">Section 8.2 of</xref> Locally Originated Routes.
             </t>
 
             <section title="Current Method to Monitor Loc-RIB">
@@ -321,7 +321,7 @@
                         <t>
                             Requires additional BGP peering to collect the received updates
                             when peering may have not even been required in the first
-                            place. For example, VRF's with no peers, redistributed bgp-ls
+                            place. For example, VRFs with no peers, redistributed BGP-LS
                             with no peers, segment routing egress peer engineering where no
                             peers have link-state address family enabled.
                         </t>
@@ -351,14 +351,14 @@
                             the router name or other system information is needed. The BMP
                             receiver and user are forced to do some type of correlation using
                             what information is available in the peering session (e.g. peering
-                            addresses, ASNs, and BGP-ID's). This leads to error prone
+                            addresses, ASNs, and BGP-IDs). This leads to error prone
                             correlations.
                         </t>
                         <t>
-                            The BGP-ID's and session addresses to router correlation
+                            The BGP-IDs and session addresses to router correlation
                             requires additional data, such as router inventory. This
                             additional data provides the BMP receiver the ability to map and
-                            correlate the BGP-ID's and/or session addresses, but requires the
+                            correlate the BGP-IDs and/or session addresses, but requires the
                             BMP receiver to somehow obtain this data outside of BMP. How this
                             data is obtained and the accuracy of the data directly effects the
                             integrity of the correlation.
@@ -384,7 +384,7 @@
                 <list style="symbols">
                     <t>
 			BGP Instance: it refers to an instance of an instance of BGP-4 <xref target="RFC4271"/>
-			and considerations in <xref target="RFC7854">8.1</xref> do apply to it.
+			and considerations in <xref target="RFC7854">section 8.1 of</xref> do apply to it.
                     </t>
                     <t>
                         Adj-RIB-In: As defined in <xref target="RFC4271"/>, "The Adj-RIBs-In contains
@@ -398,7 +398,7 @@
                         local speaker's UPDATE messages."
                     </t>
                     <t>
-                        Loc-RIB: As defined in <xref target="RFC4271">section 9.4</xref>, "The Loc-RIB
+                        Loc-RIB: As defined in <xref target="RFC4271">section 9.4 of</xref>, "The Loc-RIB
 			contains the routes that have been selected by the local BGP speaker's Decision
                         Process." It is further defined that the routes selected include
                         locally originated and routes from all peers.
@@ -421,8 +421,8 @@
                 <t>
                     A new peer type is defined for Loc-RIB to distinguish that it
                     represents Loc-RIB with or without RD and local instances.
-                    <xref target="RFC7854">Section 4.2</xref> defines a Local Instance Peer
-                    type, which is for the case of non-RD peers that have an instance
+                    <xref target="RFC7854">Section 4.2 of</xref> defines a Local Instance
+		    Peer type, which is for the case of non-RD peers that have an instance
                     identifier.
                 </t>
 
@@ -441,9 +441,9 @@
 
             <section title="Peer Flags" anchor="PeerFlags">
                 <t>
-                    In <xref target="RFC7854">section 4.2</xref>, the "locally sourced routes" comment under the
-                    L flag description is removed.  Locally sourced routes MUST be
-                    conveyed using the Loc-RIB instance peer type.
+                    In <xref target="RFC7854">section 4.2 of</xref>, the "locally sourced routes"
+		    comment under the L flag description is removed.  Locally sourced routes MUST
+		    be conveyed using the Loc-RIB instance peer type.
 
                     <vspace blankLines="1"/>
 
@@ -479,9 +479,9 @@
         <section title="Loc-RIB Monitoring">
             <t>
 		The Loc-RIB contains all routes selected by the BGP protocol Decision Process
-		<xref target="RFC4271">section 9.1</xref>. These routes include those learned
+		<xref target="RFC4271">section 9.1 of</xref>. These routes include those learned
 		from BGP peers via its Adj-RIBs-In post-policy, as well as routes learned by
-		other means <xref target="RFC4271">section 9.4</xref>. Examples of these
+		other means <xref target="RFC4271">section 9.4 of</xref>. Examples of these
 		include redistribution of routes from other protocols into BGP or otherwise
 		locally originated (ie. aggregate routes).
 
@@ -516,7 +516,7 @@
                         </t>
                         <t>
                             Peer BGP ID: Set to the BGP instance global or RD (e.g. VRF)
-                            specific router-id <xref target="RFC7854">section 1.1</xref>.
+                            specific router-id <xref target="RFC7854">section 1.1 of</xref>.
                         </t>
                         <t>
 			    Timestamp: The time when the encapsulated routes were installed in
@@ -531,7 +531,7 @@
 
             <section title="Peer UP Notification" anchor="PeerUpNotify">
                 <t>
-                    Peer UP notifications follow <xref target="RFC7854">section 4.10</xref> with the
+                    Peer UP notifications follow <xref target="RFC7854">section 4.10 of</xref> with the
                     following clarifications:
 
                     <list style="symbols">
@@ -565,7 +565,7 @@
 
                 <section title="Peer UP Information" anchor="PeerUpInfoTlv">
                     <t>
-                        The following peer UP information TLV type is added:
+                        The following Peer UP information TLV type is added:
 
                         <list style="symbols">
                             <t>
@@ -584,6 +584,12 @@
                                 If the TLV is included, then it MUST also be included in the Peer Down notification.
                             </t>
                         </list>
+
+			Multiple TLVs of the same type can be repeated as part of the same message,
+			for example to convey a filtered view of a VRF. A BMP receiver should append
+			multiple TLVs of the same type to a set in order to support alternate or
+			additional names for the same peer. If multiple strings are included, their
+			ordering MUST be preserved when they are reported.
                     </t>
                 </section>
             </section>
@@ -613,8 +619,8 @@
 
                     <vspace blankLines="1"/>
 
-                    As defined in <xref target="RFC7854">section 4.3</xref>, "Following the common BMP
-                    header and per-peer header is a BGP Update PDU."
+                    As defined in <xref target="RFC7854">section 4.3 of</xref>, "Following the
+		    common BMP header and per-peer header is a BGP Update PDU."
                 </t>
 
                 <section title="ASN Encoding">
@@ -687,7 +693,7 @@
                 <section title="Multiple Loc-RIB Peers">
                     <t>
                         There MUST be multiple emulated peers for each Loc-RIB instance, such
-                        as with VRF's. The BMP receiver identifies the Loc-RIB's by the peer
+                        as with VRFs. The BMP receiver identifies the Loc-RIB by the peer
                         header distinguisher and BGP ID.  The BMP receiver uses the VRF/Table
                         Name from the PEER UP information to associate a name to the Loc-RIB.
 
@@ -730,8 +736,10 @@
 
         <section title="Security Considerations">
             <t>
-                It is not believed that this document adds any additional security
-                considerations.
+                The same considerations as in <xref target="RFC7854">section 11 of</xref> apply to this
+                document. Implementations of this protocol SHOULD require to establish sessions with
+                authorized and trusted monitoring devices. It is also believed that this document does
+                not add any additional security considerations.
             </t>
         </section>
 
