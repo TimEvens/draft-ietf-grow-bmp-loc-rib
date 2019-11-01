@@ -454,13 +454,17 @@
                     <artwork align="center"><![CDATA[
  0 1 2 3 4 5 6 7
 +-+-+-+-+-+-+-+-+
-|F|  Reserved   |
+|V|F| Reserved  |
 +-+-+-+-+-+-+-+-+
 ]]></artwork>
                 </figure>
 
                 <t>
                     <list style="symbols">
+                        <t>
+			    The V flag indicates that the Peer address is an IPv6 address.
+			    For IPv4 peers, this is set to 0.
+                        </t>
                         <t>
                             The F flag indicates that the Loc-RIB is filtered. This MUST be
 			    set when only a subset of Loc-RIB routes is sent to the BMP
@@ -765,13 +769,15 @@
 
             <section title="BMP Peer Flags">
                 <t>
-                    This document defines a new flag (<xref target="PeerFlags"/>) and proposes that peer
-                    flags are specific to the peer type:
+                    This document defines two flags (<xref target="PeerFlags"/>) and proposes
+		    that peer flags are specific to the peer type:
 
                     <list style="symbols">
                         <t>
-                            The F flag indicates that the Loc-RIB is filtered.  This indicates
-                            that the Loc-RIB does not represent the complete routing table.
+			    Flag 0: V flag
+                        </t>
+                        <t>
+			    Flag 1: F flag
                         </t>
                     </list>
                 </t>
