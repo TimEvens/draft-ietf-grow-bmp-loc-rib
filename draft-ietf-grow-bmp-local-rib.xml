@@ -506,10 +506,9 @@
                             unique locally defined value of the particular instance the Loc-RIB belongs to.
                         </t>
                         <t>
-                            Peer Address: The remote IP address associated with the TCP session
-                            over which the encapsulated PDU was received. If zero-filled, the
-                            information is not available and setting the V flag is not
-                            applicable.
+			    Peer Address: Zero-filled.  Remote peer address is not applicable.
+			    The V flag is not applicable with Local-RIB Instance peer type
+			    considering addresses are zero-filed.
                         </t>
                         <t>
                             Peer AS: Set to the BGP instance global or default ASN value.
