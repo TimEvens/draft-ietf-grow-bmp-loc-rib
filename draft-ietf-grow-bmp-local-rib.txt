@@ -120,9 +120,9 @@ Internet-Draft                 BMP Loc-RIB                 November 2020
    remote BGP instances without the need to establish BGP peering
    sessions.  BMP [RFC7854] does not define a method to send the BGP
    instance Loc-RIB.  It does define in section 8.2 of [RFC7854] locally
-   orignated routes, but these routes are defined as the routes
+   originated routes, but these routes are defined as the routes
    originated into BGP.  For example, locally sourced routes that are
-   redistriubted.
+   redistributed.
 
    Figure 1 shows the flow of received routes from one or more BGP peers
    into the Loc-RIB.

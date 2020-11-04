@@ -126,9 +126,9 @@
 
                 BMP <xref target="RFC7854"/> does not define a method to send
                 the BGP instance Loc-RIB.  It does define in 
-                <xref target="RFC7854">section 8.2 of</xref> locally orignated routes,
+                <xref target="RFC7854">section 8.2 of</xref> locally originated routes,
                 but these routes are defined as the routes originated into BGP. For
-                example, locally sourced routes that are redistriubted.
+                example, locally sourced routes that are redistributed.
             </t>
             <t>
                 <xref target="FigAdjRibInLocRib"/> shows the flow of received routes from one or more BGP peers
