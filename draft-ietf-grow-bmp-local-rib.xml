@@ -568,7 +568,7 @@
 
                         <list style="symbols">
                             <t>
-                                Type = &IANA_PEER_INFO_TLV_TABLE_NAME;: VRF/Table Name.  The Information field contains an
+                                Type = &IANA_PEER_INFO_TLV_TABLE_NAME;: VRF/Table Name.  The Information field contains a
                                 UTF-8 string whose value MUST be equal to the value of the VRF or
                                 table name (e.g. RD instance name) being conveyed.  The string size
                                 MUST be within the range of 1 to 255 bytes.
@@ -600,7 +600,7 @@
 
                     <list style="symbols">
                     	<t>
-                                Type = &IANA_PEER_INFO_TLV_TABLE_NAME;: VRF/Table Name.  The Information field contains an
+                                Type = &IANA_PEER_INFO_TLV_TABLE_NAME;: VRF/Table Name.  The Information field contains a
                                 UTF-8 string whose value MUST be equal to the value of the VRF or
                                 table name (e.g. RD instance name) being conveyed.  The string size
                                 MUST be within the range of 1 to 255 bytes. The VRF/Table Name
@@ -784,7 +784,7 @@
                     <list style="symbols">
                         <t>
                             Type = &IANA_PEER_INFO_TLV_TABLE_NAME;: VRF/Table Name.
-                            The Information field contains an UTF-8 string whose value MUST be equal to the
+                            The Information field contains a UTF-8 string whose value MUST be equal to the
                             value of the VRF or table name (e.g. RD instance name) being conveyed.
                             The string size MUST be within the range of 1 to 255 bytes.
                         </t>

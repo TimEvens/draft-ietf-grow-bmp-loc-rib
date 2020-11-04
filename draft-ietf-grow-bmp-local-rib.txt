@@ -535,7 +535,7 @@ Internet-Draft                 BMP Loc-RIB                 November 2020
 
    The following Peer UP information TLV type is added:
 
-   *  Type = 3: VRF/Table Name.  The Information field contains an UTF-8
+   *  Type = 3: VRF/Table Name.  The Information field contains a UTF-8
       string whose value MUST be equal to the value of the VRF or table
       name (e.g.  RD instance name) being conveyed.  The string size
       MUST be within the range of 1 to 255 bytes.
@@ -568,7 +568,7 @@ Internet-Draft                 BMP Loc-RIB                 November 2020
    reason is data in TLV format.  The following peer Down information
    TLV type is defined:
 
-   *  Type = 3: VRF/Table Name.  The Information field contains an UTF-8
+   *  Type = 3: VRF/Table Name.  The Information field contains a UTF-8
       string whose value MUST be equal to the value of the VRF or table
       name (e.g.  RD instance name) being conveyed.  The string size
       MUST be within the range of 1 to 255 bytes.  The VRF/Table Name
@@ -713,7 +713,7 @@ Internet-Draft                 BMP Loc-RIB                 November 2020
    This document defines the following new BMP PEER UP informational
    message TLV types (Section 5.2.1):
 
-   *  Type = 3: VRF/Table Name.  The Information field contains an UTF-8
+   *  Type = 3: VRF/Table Name.  The Information field contains a UTF-8
       string whose value MUST be equal to the value of the VRF or table
       name (e.g.  RD instance name) being conveyed.  The string size
       MUST be within the range of 1 to 255 bytes.
