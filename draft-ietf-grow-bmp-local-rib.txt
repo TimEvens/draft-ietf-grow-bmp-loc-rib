@@ -316,7 +316,6 @@ Internet-Draft                 BMP Loc-RIB                 November 2020
 
               Figure 3: Alternative method to monitor Loc-RIB
 
-
    The setup needed to monitor the Loc-RIB of a router requires another
    router with a peering session to the target router that is to be
    monitored.  As shown in Figure 3, the target router Loc-RIB is
@@ -328,6 +327,7 @@ Internet-Draft                 BMP Loc-RIB                 November 2020
 
    *  Requires at least two routers when only one router was to be
       monitored.
+
 
 
 

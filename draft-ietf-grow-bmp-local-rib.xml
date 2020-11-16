@@ -127,7 +127,7 @@
 ]]></artwork>
       </figure>
       <t>
-                As shown in <xref target="FigLocallyOriginated" format="default"/>, Locally originated
+        As shown in <xref target="FigLocallyOriginated" format="default"/>, Locally originated
 		<xref target="RFC4271" format="default">section 9.4 of</xref> follows a similar flow where the
 		redistributed or otherwise originated routes get installed into the Loc-RIB
 		based on the decision process selection.
@@ -260,8 +260,6 @@
     ROUTER2 BMP Feed               ROUTER3 BMP Feed
 ]]></artwork>
         </figure>
-        <t>
-        </t>
         <t>
                     The setup needed to monitor the Loc-RIB of a router requires another
                     router with a peering session to the target router that is to be
