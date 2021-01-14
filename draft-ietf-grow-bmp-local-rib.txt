@@ -12,7 +12,7 @@ Expires: 18 July 2021                                         P. Lucente
 
 
          Support for Local RIB in BGP Monitoring Protocol (BMP)
-                    draft-ietf-grow-bmp-local-rib-08
+                    draft-ietf-grow-bmp-local-rib-09
 
 Abstract
 
