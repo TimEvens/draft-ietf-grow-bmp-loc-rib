@@ -8,12 +8,12 @@
 <?rfc sortrefs="yes" ?>
 <?rfc compact="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-grow-bmp-local-rib-08" ipr="trust200902" submissionType="IETF" updates="7854" obsoletes="" xml:lang="en" tocInclude="true" tocDepth="4" symRefs="true" sortRefs="true" version="3">
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-grow-bmp-local-rib-09" ipr="trust200902" submissionType="IETF" updates="7854" obsoletes="" xml:lang="en" tocInclude="true" tocDepth="4" symRefs="true" sortRefs="true" version="3">
   <!-- xml2rfc v2v3 conversion 3.3.0 -->
   <front>
     <title abbrev="BMP Loc-RIB">
             Support for Local RIB in BGP Monitoring Protocol (BMP)</title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-grow-bmp-local-rib-08"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-grow-bmp-local-rib-09"/>
     <author fullname="Tim Evens" initials="T" surname="Evens">
       <organization>Cisco Systems</organization>
       <address>
@@ -66,7 +66,7 @@
         <email>paolo@ntt.net</email>
       </address>
     </author>
-    <date year="2020"/>
+    <date year="2021"/>
     <area>General</area>
     <workgroup>Global Routing Operations</workgroup>
     <keyword>BGP</keyword>
@@ -545,7 +545,7 @@
       <section anchor="PeerDownReasonCode" numbered="true" toc="default">
         <name>Peer Down Notification</name>
         <t>
-            Peer down notification MUST use reason code TBD3. Following the reason is data
+            Peer down notification MUST use reason code 6. Following the reason is data
 		    in TLV format. The following peer Down information TLV type is defined:
 
         </t>
@@ -747,7 +747,7 @@
         </t>
         <ul spacing="normal">
           <li>
-            Type = TBD3: Local system closed, TLV data follows.
+            Type = 6: Local system closed, TLV data follows.
           </li>
         </ul>
       </section>
