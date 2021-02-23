@@ -127,10 +127,10 @@
 ]]></artwork>
       </figure>
       <t>
-        As shown in <xref target="FigLocallyOriginated" format="default"/>, Locally originated
-		<xref target="RFC4271" format="default">section 9.4 of</xref> follows a similar flow where the
-		redistributed or otherwise originated routes get installed into the Loc-RIB
-		based on the decision process selection.
+        <xref target="FigLocallyOriginated" format="default"/> (Locally Originated into Loc-RIB)
+	illustrates how redistributed or otherwise originated routes get installed into the
+	Loc-RIB based on the decision process selection in
+	<xref target="RFC4271" format="default">RFC 4271</xref>.
       </t>
       <figure anchor="FigLocallyOriginated">
         <name>Locally Originated into Loc-RIB</name>
@@ -178,7 +178,7 @@
                         information using BGP-LS, it requires the application to
                         implement SPF and possibly CSPF based on additional policies.
                         This is overly complex for such a simple application that only
-                        needed to have access to the Loc-RIB.
+                        needs to have access to the Loc-RIB.
             </t>                        
 
         </li>
@@ -187,7 +187,7 @@
                         those changes do not always result in the router's Loc-RIB
                         changing. The change in the Loc-RIB can have a direct impact
                         on the forwarding state. It can greatly reduce time to
-                        troubleshoot and resolve issues if operators had the history of
+                        troubleshoot and resolve issues if operators have the history of
                         Loc-RIB changes. For example, a performance issue might have
                         been seen for only a duration of 5 minutes. Post
                         troubleshooting this issue without Loc-RIB history hides any
@@ -269,8 +269,8 @@
                     router then forwards Adj-RIB-In Pre-Policy to the BMP receiver.
         </t>
         <t>
-                    The current method introduces the need for additional resources:
-
+                    BMP lacking access to Loc-RIB introduces the need for additional
+		    resources:
         </t>
         <ul spacing="normal">
           <li>
@@ -286,8 +286,8 @@
           </li>
         </ul>
         <t>
-                    Complexities introduced with current method in order to derive
-                    (e.g. correlate) peer to router Loc-RIB:
+                    Complexities introduced by the lack of access to Loc-RIB in
+		    order to derive (e.g. correlate) peer to router Loc-RIB:
 
         </t>
         <ul spacing="normal">
@@ -339,7 +339,7 @@
       <name>Definitions</name>
       <ul spacing="normal">
         <li>
-			BGP Instance: it refers to an instance of an instance of BGP-4 <xref target="RFC4271" format="default"/>
+			BGP Instance: refers to an instance of an instance of BGP-4 <xref target="RFC4271" format="default"/>
 			and considerations in <xref target="RFC7854" format="default">section 8.1 of</xref> do apply to it.
         </li>
         <li>
@@ -395,8 +395,8 @@
         <name>Peer Flags</name>
         <t>
             In <xref target="RFC7854" format="default">section 4.2 of</xref>, the "locally sourced routes"
-            comment under the L flag description is removed.  Locally sourced routes MUST
-            be conveyed using the Loc-RIB instance peer type.
+            comment under the L flag description is removed. If locally sourced routes are communicated
+	    using BMP, they MUST be conveyed using the Loc-RIB instance peer type.
         </t>
         <t>
             The per-peer header flags for Loc-RIB Instance Peer type are defined
@@ -428,13 +428,12 @@
     <section numbered="true" toc="default">
       <name>Loc-RIB Monitoring</name>
       <t>
-		The Loc-RIB contains all routes selected by the BGP protocol Decision Process
-		<xref target="RFC4271" format="default">section 9.1 of</xref>. These routes include those learned
-		from BGP peers via its Adj-RIBs-In post-policy, as well as routes learned by
-		other means <xref target="RFC4271" format="default">section 9.4 of</xref>. Examples of these
-		include redistribution of routes from other protocols into BGP or otherwise
-		locally originated (ie. aggregate routes).
-
+		The Loc-RIB contains all routes selected by the BGP protocol Decision Process as
+		described in  <xref target="RFC4271" format="default">section 9.1 of</xref>. These
+		routes include those learned from BGP peers via its Adj-RIBs-In post-policy, as
+		well as routes learned by other means as per <xref target="RFC4271" format="default">section 9.4 of</xref>.
+		Examples of these include redistribution of routes from other protocols into BGP
+		or otherwise locally originated (ie. aggregate routes).
       </t>
       <t>
 		As mentioned in <xref target="PeerFlags" format="default"/> a subset of Loc-RIB routes MAY be
@@ -443,8 +442,8 @@
       <section numbered="true" toc="default">
         <name>Per-Peer Header</name>
         <t>
-            All peer messages that include a per-peer header MUST use the
-            following values:
+            All peer messages that include a per-peer header <xref target="RFC7854" format="default">section 4.2 of</xref>
+	    MUST use the following values:
 
         </t>
         <ul spacing="normal">
@@ -495,7 +494,7 @@
           </li>
           <li>
                 Sent OPEN Message: This is a fabricated BGP OPEN message.
-                Capabilities MUST include 4-octet ASN and all necessary
+                Capabilities MUST include the 4-octet ASN and all necessary
                 capabilities to represent the Loc-RIB route monitoring messages.
                 Only include capabilities if they will be used for Loc-RIB
                 monitoring messages.  For example, if add-paths is enabled for
@@ -587,7 +586,7 @@
             final resultant updates are sent.
           </t>
           <t>
-            For example, prefix 10.0.0.0/8 is updated in the Loc-RIB 5 times
+            For example, prefix 192.0.2.0/24 is updated in the Loc-RIB 5 times
             within 1 second. State compression of BMP route monitor messages
             results in only the final change being transmitted. The other 4
             changes are suppressed because they fall within the compression
