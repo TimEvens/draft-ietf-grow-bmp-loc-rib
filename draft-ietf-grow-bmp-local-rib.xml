@@ -456,22 +456,22 @@
                 unique locally defined value of the particular instance the Loc-RIB belongs to.
           </li>
           <li>
-			    Peer Address: Zero-filled.  Remote peer address is not applicable.
-			    The V flag is not applicable with Loc-RIB Instance peer type
-			    considering addresses are zero-filed.
+		Peer Address: Zero-filled.  Remote peer address is not applicable.
+		The V flag is not applicable with Loc-RIB Instance peer type
+		considering addresses are zero-filed.
           </li>
           <li>
-                Peer AS: Set to the BGP instance global or default ASN value.
+                Peer AS: Set to the primary router BGP ASN.
           </li>
           <li>
                 Peer BGP ID: Set to the BGP instance global or RD (e.g. VRF)
                 specific router-id <xref target="RFC7854" format="default">section 1.1 of</xref>.
           </li>
           <li>
-			    Timestamp: The time when the encapsulated routes were installed in
-			    The Loc-RIB, expressed in seconds and microseconds since midnight
-			    (zero hour), January 1, 1970 (UTC).  If zero, the time is unavailable.
-	 		    Precision of the timestamp is implementation-dependent.
+		Timestamp: The time when the encapsulated routes were installed in
+		The Loc-RIB, expressed in seconds and microseconds since midnight
+		(zero hour), January 1, 1970 (UTC).  If zero, the time is unavailable.
+		Precision of the timestamp is implementation-dependent.
           </li>
         </ul>
       </section>

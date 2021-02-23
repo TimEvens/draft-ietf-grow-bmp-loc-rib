@@ -494,7 +494,7 @@ Internet-Draft                 BMP Loc-RIB                 February 2021
       The V flag is not applicable with Loc-RIB Instance peer type
       considering addresses are zero-filed.
 
-   *  Peer AS: Set to the BGP instance global or default ASN value.
+   *  Peer AS: Set to the primary router BGP ASN.
 
    *  Peer BGP ID: Set to the BGP instance global or RD (e.g.  VRF)
       specific router-id section 1.1 of [RFC7854].
