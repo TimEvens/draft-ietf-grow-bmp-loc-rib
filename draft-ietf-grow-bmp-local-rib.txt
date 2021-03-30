@@ -94,11 +94,11 @@ Table of Contents
    7.  Security Considerations . . . . . . . . . . . . . . . . . . .  13
    8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  13
      8.1.  BMP Peer Type . . . . . . . . . . . . . . . . . . . . . .  13
-     8.2.  BMP Peer Flags  . . . . . . . . . . . . . . . . . . . . .  13
+     8.2.  BMP Peer Flags  . . . . . . . . . . . . . . . . . . . . .  14
      8.3.  Peer Up Information TLV . . . . . . . . . . . . . . . . .  14
      8.4.  Peer Down Reason code . . . . . . . . . . . . . . . . . .  14
    9.  Normative References  . . . . . . . . . . . . . . . . . . . .  14
-   10. Informative References  . . . . . . . . . . . . . . . . . . .  14
+   10. Informative References  . . . . . . . . . . . . . . . . . . .  15
    Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  15
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  15
 
@@ -630,7 +630,9 @@ Internet-Draft                 BMP Loc-RIB                    March 2021
 
 5.5.  Route Mirroring
 
-   Route mirroring is not applicable to Loc-RIB and Route Mirroring
+   Section 4.7 of [RFC7854], defines Route Mirroring for verbatim
+   duplication of messages received.  This is not applicable to Loc-RIB
+   as PDUs are originated by the router.  Any received Route Mirroring
    messages SHOULD be ignored.
 
 5.6.  Statistics Report
@@ -656,16 +658,14 @@ Internet-Draft                 BMP Loc-RIB                    March 2021
 
 6.1.1.  Multiple Loc-RIB Peers
 
-   There MUST be multiple emulated peers for each Loc-RIB instance, such
-   as with VRFs.  The BMP receiver identifies the Loc-RIB by the peer
-   header distinguisher and BGP ID.  The BMP receiver uses the VRF/
+   There MUST be at least one emulated peer for each Loc-RIB instance,
+   such as with VRFs.  The BMP receiver identifies the Loc-RIB by the
+   peer header distinguisher and BGP ID.  The BMP receiver uses the VRF/
    Table Name from the Peer Up information to associate a name to the
    Loc-RIB.
 
-   In some implementations, it might be required to have more than one
-   emulated peer for Loc-RIB to convey different address families for
-   the same Loc-RIB.  In this case, the peer distinguisher and BGP ID
-   should be the same since they represent the same Loc-RIB instance.
+
+
 
 
 
@@ -674,6 +674,10 @@ Evens, et al.           Expires 30 September 2021              [Page 12]
 Internet-Draft                 BMP Loc-RIB                    March 2021
 
 
+   In some implementations, it might be required to have more than one
+   emulated peer for Loc-RIB to convey different address families for
+   the same Loc-RIB.  In this case, the peer distinguisher and BGP ID
+   should be the same since they represent the same Loc-RIB instance.
    Each emulated peer instance MUST send a Peer Up with the OPEN message
    indicating the address family capabilities.  A BMP receiver MUST
    process these capabilities to know which peer belongs to which
@@ -718,10 +722,6 @@ Internet-Draft                 BMP Loc-RIB                    March 2021
 
    *  Peer Type = 3: Loc-RIB Instance Peer
 
-8.2.  BMP Peer Flags
-
-   This document defines a new flag (Section 4.2) and proposes that peer
-   flags are specific to the peer type:
 
 
 
@@ -730,13 +730,21 @@ Evens, et al.           Expires 30 September 2021              [Page 13]
 Internet-Draft                 BMP Loc-RIB                    March 2021
 
 
+8.2.  BMP Peer Flags
+
+   This document defines that peer flags are specific to the Loc-RIB
+   instance peer type.  As defined in (Section 4.2):
+
    *  The F flag indicates that the Loc-RIB is filtered.  This indicates
       that the Loc-RIB does not represent the complete routing table.
 
+   Flags 1 through 7 are unassigned.  The registration procedure for the
+   registry is "Standards Action".
+
 8.3.  Peer Up Information TLV
 
-   This document defines the following new BMP Peer Up informational
-   message TLV types (Section 5.2.1):
+   This document defines the following new BMP Peer Up information TLV
+   type (Section 5.2.1):
 
    *  Type = 3: VRF/Table Name.  The Information field contains a UTF-8
       string whose value MUST be equal to the value of the VRF or table
@@ -762,6 +770,22 @@ Internet-Draft                 BMP Loc-RIB                    March 2021
               DOI 10.17487/RFC4271, January 2006,
               <https://www.rfc-editor.org/info/rfc4271>.
 
+   [RFC5226]  Narten, T. and H. Alvestrand, "Guidelines for Writing an
+              IANA Considerations Section in RFCs", RFC 5226,
+              DOI 10.17487/RFC5226, May 2008,
+              <https://www.rfc-editor.org/info/rfc5226>.
+
+
+
+
+
+
+
+Evens, et al.           Expires 30 September 2021              [Page 14]
+
+Internet-Draft                 BMP Loc-RIB                    March 2021
+
+
    [RFC7854]  Scudder, J., Ed., Fernando, R., and S. Stuart, "BGP
               Monitoring Protocol (BMP)", RFC 7854,
               DOI 10.17487/RFC7854, June 2016,
@@ -777,14 +801,6 @@ Internet-Draft                 BMP Loc-RIB                    March 2021
               "Advertisement of Multiple Paths in BGP", RFC 7911,
               DOI 10.17487/RFC7911, July 2016,
               <https://www.rfc-editor.org/info/rfc7911>.
-
-
-
-
-Evens, et al.           Expires 30 September 2021              [Page 14]
-
-Internet-Draft                 BMP Loc-RIB                    March 2021
-
 
 Acknowledgements
 
@@ -820,6 +836,12 @@ Authors' Addresses
    Email: manbhard@cisco.com
 
 
+
+Evens, et al.           Expires 30 September 2021              [Page 15]
+
+Internet-Draft                 BMP Loc-RIB                    March 2021
+
+
    Paolo Lucente
    NTT Communications
    Siriusdreef 70-72
@@ -837,4 +859,38 @@ Authors' Addresses
 
 
 
-Evens, et al.           Expires 30 September 2021              [Page 15]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Evens, et al.           Expires 30 September 2021              [Page 16]

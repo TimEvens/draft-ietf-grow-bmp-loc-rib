@@ -6,6 +6,7 @@
     <!ENTITY RFC8174 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8174.xml">
     <!ENTITY RFC4271 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4271.xml">
     <!ENTITY RFC7854 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7854.xml">
+    <!ENTITY RFC5226 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5226.xml">
 ]>
 <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 <?rfc strict="yes" ?>
@@ -86,7 +87,7 @@
                 Information Bases (RIBs). This document updates BMP (RFC 7854) by
                 adding access to the Local Routing Information Base (Loc-RIB), as
                 defined in RFC 4271. The Loc-RIB contains the routes that have been
-                selected by the local BGP speaker's Decision Process.
+                selected by the local BGP speaker's Decision Process. 
       </t>
     </abstract>
   </front>
@@ -615,8 +616,10 @@
       <section numbered="true" toc="default">
         <name>Route Mirroring</name>
         <t>
-            Route mirroring is not applicable to Loc-RIB and Route Mirroring
-		    messages SHOULD be ignored.
+            <xref target="RFC7854" format="default">Section 4.7 of</xref>, 
+            defines Route Mirroring for verbatim  duplication of messages received. This
+            is not applicable to Loc-RIB as PDUs are originated by the router.
+            Any received Route Mirroring messages SHOULD be ignored.
         </t>
       </section>
       <section numbered="true" toc="default">
@@ -651,8 +654,8 @@
         <section numbered="true" toc="default">
           <name>Multiple Loc-RIB Peers</name>
           <t>
-            There MUST be multiple emulated peers for each Loc-RIB instance, such
-            as with VRFs. The BMP receiver identifies the Loc-RIB by the peer
+            There MUST be at least one emulated peer for each Loc-RIB instance,
+            such as with VRFs. The BMP receiver identifies the Loc-RIB by the peer
             header distinguisher and BGP ID.  The BMP receiver uses the VRF/Table
             Name from the Peer Up information to associate a name to the Loc-RIB.
           </t>
@@ -723,8 +726,8 @@
       <section numbered="true" toc="default">
         <name>BMP Peer Flags</name>
         <t>
-            This document defines a new flag (<xref target="PeerFlags" format="default"/>) and proposes that peer
-            flags are specific to the peer type:
+            This document defines that peer flags are specific to the Loc-RIB instance peer type.
+            As defined in (<xref target="PeerFlags" format="default"/>):
 
         </t>
         <ul spacing="normal">
@@ -733,12 +736,17 @@
             that the Loc-RIB does not represent the complete routing table.
          </li>
         </ul>
+
+        <t>
+         Flags 1 through 7 are unassigned.  The registration procedure for the
+        registry is "Standards Action".
+        </t>
       </section>
       <section numbered="true" toc="default">
         <name>Peer Up Information TLV</name>
         <t>
-            This document defines the following new BMP Peer Up informational
-            message TLV types (<xref target="PeerUpInfoTlv" format="default"/>):
+            This document defines the following new BMP Peer Up information
+            TLV type (<xref target="PeerUpInfoTlv" format="default"/>):
 
         </t>
         <ul spacing="normal">
@@ -749,6 +757,7 @@
             The string size MUST be within the range of 1 to 255 bytes.
           </li>
         </ul>
+
       </section>
       <section numbered="true" toc="default">
         <name>Peer Down Reason code</name>
@@ -769,6 +778,7 @@
       &RFC2119;
       &RFC8174;
       &RFC4271;
+      &RFC5226;
       &RFC7854;
     </references>
     <references title="Informative References">
