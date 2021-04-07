@@ -293,8 +293,7 @@
                     with no peers, redistributed BGP-LS with no peers, and
                     segment routing egress peer engineering where no
                     peers have link-state address family enabled are all
-                    situations with no preexisting BGP peer where Loc-RIB
-                    access via BMP would be useful.
+                    situations with no preexisting BGP peers.
           </li>
         </ul>
         <t>
