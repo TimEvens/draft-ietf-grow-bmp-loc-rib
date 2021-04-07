@@ -699,9 +699,10 @@
       <name>Security Considerations</name>
       <t>
         The same considerations as in <xref target="RFC7854" format="default">section 11 of</xref> apply to this
-        document. Implementations of this protocol SHOULD require to establish sessions with
-        authorized and trusted monitoring devices. It is also believed that this document does
-        not add any additional security considerations.
+        document. Implementations of this protocol SHOULD require monitored routers to establish
+        secure sessions with authorized and trusted monitoring stations. 
+        It is also believed that this document does not add any features that require any additional
+        security considerations.
       </t>
     </section>
     <section numbered="true" toc="default">
@@ -724,7 +725,7 @@
         </ul>
       </section>
       <section numbered="true" toc="default">
-        <name>BMP Peer Flags</name>
+        <name>BMP Loc-RIB Instance Peer Flags</name>
         <t>
             This document defines that peer flags are specific to the Loc-RIB instance peer type.
             As defined in (<xref target="PeerFlags" format="default"/>):
@@ -732,7 +733,7 @@
         </t>
         <ul spacing="normal">
           <li>
-            The F flag indicates that the Loc-RIB is filtered.  This indicates
+            Flag 0: The F flag indicates that the Loc-RIB is filtered.  This indicates
             that the Loc-RIB does not represent the complete routing table.
          </li>
         </ul>
