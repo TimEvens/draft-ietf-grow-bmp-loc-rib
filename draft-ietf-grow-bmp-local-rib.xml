@@ -198,7 +198,7 @@
                         on the forwarding state. It can greatly reduce time to
                         troubleshoot and resolve issues if operators have the history of
                         Loc-RIB changes. For example, a performance issue might have
-                        been seen for only a duration of 5 minutes. Post
+                        been seen for only a duration of 5 minutes. Post-facto
                         troubleshooting this issue without Loc-RIB history hides any
                         decision based routing changes that might have happened during
                         those five minutes.
@@ -214,8 +214,8 @@
                         another router to derive the Loc-RIB is likely to not show same
                         installed prefixes. For example, the received Adj-RIB-In will
                         be different if ADD-PATH <xref target="RFC7911" format="default"/>
-                        is not enabled or if maximum number of equal paths are different
-                        from Loc-RIB to routes advertised.
+                        is not enabled or if maximum supported number of equal paths is different
+                        between Loc-RIB and advertised routes.
       </li>
       </ul>
       <t>
@@ -290,14 +290,15 @@
                     Requires additional BGP peering to collect the received updates
                     when peering may have not even been required in the first
                     place. For example, virtual routing and forarding (VRF) tables 
-                    with no peers, redistributed BGP-LS with no peers,
+                    with no peers, redistributed BGP-LS with no peers, and
                     segment routing egress peer engineering where no
-                    peers have link-state address family enabled.
+                    peers have link-state address family enabled are all
+                    situations with no preexisting BGP peers.
           </li>
         </ul>
         <t>
-                    Complexities introduced when correlating a received Adj-RIB-In as
-                    a router Loc-RIB:
+                    Many complexities are introduced when using a received Adj-RIB-In
+                    to infer a router Loc-RIB:
 
         </t>
         <ul spacing="normal">
@@ -307,7 +308,7 @@
                     more specific prefixes, manipulates attributes, or filters routes. Not
                     only does this invalidate the Loc-RIB view, it adds complexity
                     when multiple BMP routers may have peering sessions to the same
-                    router. The BMP receiver user is left with the error prone task of
+                    router. The BMP receiver user is left with the error-prone task of
                     identifying which peering session is the best representative of
                     the Loc-RIB.
           </li>
@@ -320,7 +321,7 @@
                     receiver and user are forced to do some type of correlation using
                     what information is available in the peering session (e.g., peering
                     addresses, autonomous system numbers, and BGP identifiers).
-                    This leads to error prone correlations.
+                    This leads to error-prone correlations.
           </li>
           <li>
                     Correlating BGP identifiers (BGP-ID) and session addresses to a 
@@ -580,7 +581,7 @@
 
         </t>
         <t>
-            As defined in <xref target="RFC7854" format="default">section 4.3 of</xref>, "Following the
+            As defined in <xref target="RFC7854" format="default">section 4.6 of</xref>, "Following the
 		    common BMP header and per-peer header is a BGP Update PDU."
         </t>
         <section numbered="true" toc="default">
@@ -699,10 +700,9 @@
       <name>Security Considerations</name>
       <t>
         The same considerations as in <xref target="RFC7854" format="default">section 11 of</xref> apply to this
-        document. Implementations of this protocol SHOULD require monitored routers to establish
-        secure sessions with authorized and trusted monitoring stations. 
-        It is also believed that this document does not add any features that require any additional
-        security considerations.
+        document. Implementations of this protocol SHOULD require that sessions are only established with
+        authorized and trusted monitoring devices. It is also believed that this document does
+        not add any additional security considerations.
       </t>
     </section>
     <section numbered="true" toc="default">
