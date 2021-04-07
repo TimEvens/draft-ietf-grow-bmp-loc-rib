@@ -6,9 +6,9 @@ Global Routing Operations                                       T. Evens
 Internet-Draft                                              S. Bayraktar
 Updates: 7854 (if approved)                                  M. Bhardwaj
 Intended status: Standards Track                           Cisco Systems
-Expires: 7 October 2021                                       P. Lucente
+Expires: 9 October 2021                                       P. Lucente
                                                       NTT Communications
-                                                            5 April 2021
+                                                            7 April 2021
 
 
          Support for Local RIB in BGP Monitoring Protocol (BMP)
@@ -37,7 +37,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 October 2021.
+   This Internet-Draft will expire on 9 October 2021.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Evens, et al.            Expires 7 October 2021                 [Page 1]
+Evens, et al.            Expires 9 October 2021                 [Page 1]
 
 Internet-Draft                 BMP Loc-RIB                    April 2021
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Evens, et al.            Expires 7 October 2021                 [Page 2]
+Evens, et al.            Expires 9 October 2021                 [Page 2]
 
 Internet-Draft                 BMP Loc-RIB                    April 2021
 
@@ -165,7 +165,7 @@ Internet-Draft                 BMP Loc-RIB                    April 2021
 
 
 
-Evens, et al.            Expires 7 October 2021                 [Page 3]
+Evens, et al.            Expires 9 October 2021                 [Page 3]
 
 Internet-Draft                 BMP Loc-RIB                    April 2021
 
@@ -221,7 +221,7 @@ Internet-Draft                 BMP Loc-RIB                    April 2021
 
 
 
-Evens, et al.            Expires 7 October 2021                 [Page 4]
+Evens, et al.            Expires 9 October 2021                 [Page 4]
 
 Internet-Draft                 BMP Loc-RIB                    April 2021
 
@@ -232,9 +232,9 @@ Internet-Draft                 BMP Loc-RIB                    April 2021
       the forwarding state.  It can greatly reduce time to troubleshoot
       and resolve issues if operators have the history of Loc-RIB
       changes.  For example, a performance issue might have been seen
-      for only a duration of 5 minutes.  Post troubleshooting this issue
-      without Loc-RIB history hides any decision based routing changes
-      that might have happened during those five minutes.
+      for only a duration of 5 minutes.  Post-facto troubleshooting this
+      issue without Loc-RIB history hides any decision based routing
+      changes that might have happened during those five minutes.
 
    *  Operators may wish to validate the impact of policies applied to
       Adj-RIB-In by analyzing the final decision made by the router when
@@ -245,8 +245,8 @@ Internet-Draft                 BMP Loc-RIB                    April 2021
       Monitoring the Adj-RIB-In for this router from another router to
       derive the Loc-RIB is likely to not show same installed prefixes.
       For example, the received Adj-RIB-In will be different if ADD-PATH
-      [RFC7911] is not enabled or if maximum number of equal paths are
-      different from Loc-RIB to routes advertised.
+      [RFC7911] is not enabled or if maximum supported number of equal
+      paths is different between Loc-RIB and advertised routes.
 
    This document adds Loc-RIB to the BGP Monitoring Protocol and
    replaces Section 8.2 of [RFC7854] Locally Originated Routes.
@@ -277,7 +277,7 @@ Internet-Draft                 BMP Loc-RIB                    April 2021
 
 
 
-Evens, et al.            Expires 7 October 2021                 [Page 5]
+Evens, et al.            Expires 9 October 2021                 [Page 5]
 
 Internet-Draft                 BMP Loc-RIB                    April 2021
 
@@ -333,7 +333,7 @@ Internet-Draft                 BMP Loc-RIB                    April 2021
 
 
 
-Evens, et al.            Expires 7 October 2021                 [Page 6]
+Evens, et al.            Expires 9 October 2021                 [Page 6]
 
 Internet-Draft                 BMP Loc-RIB                    April 2021
 
@@ -341,19 +341,19 @@ Internet-Draft                 BMP Loc-RIB                    April 2021
    *  Requires additional BGP peering to collect the received updates
       when peering may have not even been required in the first place.
       For example, virtual routing and forarding (VRF) tables with no
-      peers, redistributed BGP-LS with no peers, segment routing egress
-      peer engineering where no peers have link-state address family
-      enabled.
+      peers, redistributed BGP-LS with no peers, and segment routing
+      egress peer engineering where no peers have link-state address
+      family enabled are all situations with no preexisting BGP peers.
 
-   Complexities introduced when correlating a received Adj-RIB-In as a
-   router Loc-RIB:
+   Many complexities are introduced when using a received Adj-RIB-In to
+   infer a router Loc-RIB:
 
    *  Adj-RIB-Out received as Adj-RIB-In from another router may have a
       policy applied that filters, generates aggregates, suppresses more
       specific prefixes, manipulates attributes, or filters routes.  Not
       only does this invalidate the Loc-RIB view, it adds complexity
       when multiple BMP routers may have peering sessions to the same
-      router.  The BMP receiver user is left with the error prone task
+      router.  The BMP receiver user is left with the error-prone task
       of identifying which peering session is the best representative of
       the Loc-RIB.
 
@@ -365,7 +365,7 @@ Internet-Draft                 BMP Loc-RIB                    April 2021
       receiver and user are forced to do some type of correlation using
       what information is available in the peering session (e.g.,
       peering addresses, autonomous system numbers, and BGP
-      identifiers).  This leads to error prone correlations.
+      identifiers).  This leads to error-prone correlations.
 
    *  Correlating BGP identifiers (BGP-ID) and session addresses to a
       router requires additional data, such as router inventory.  This
@@ -389,7 +389,7 @@ Internet-Draft                 BMP Loc-RIB                    April 2021
 
 
 
-Evens, et al.            Expires 7 October 2021                 [Page 7]
+Evens, et al.            Expires 9 October 2021                 [Page 7]
 
 Internet-Draft                 BMP Loc-RIB                    April 2021
 
@@ -445,7 +445,7 @@ Internet-Draft                 BMP Loc-RIB                    April 2021
 
 
 
-Evens, et al.            Expires 7 October 2021                 [Page 8]
+Evens, et al.            Expires 9 October 2021                 [Page 8]
 
 Internet-Draft                 BMP Loc-RIB                    April 2021
 
@@ -501,7 +501,7 @@ Internet-Draft                 BMP Loc-RIB                    April 2021
 
 
 
-Evens, et al.            Expires 7 October 2021                 [Page 9]
+Evens, et al.            Expires 9 October 2021                 [Page 9]
 
 Internet-Draft                 BMP Loc-RIB                    April 2021
 
@@ -557,7 +557,7 @@ Internet-Draft                 BMP Loc-RIB                    April 2021
 
 
 
-Evens, et al.            Expires 7 October 2021                [Page 10]
+Evens, et al.            Expires 9 October 2021                [Page 10]
 
 Internet-Draft                 BMP Loc-RIB                    April 2021
 
@@ -593,7 +593,7 @@ Internet-Draft                 BMP Loc-RIB                    April 2021
    Route Monitoring messages are used for initial synchronization of the
    Loc-RIB.  They are also used to convey incremental Loc-RIB changes.
 
-   As defined in section 4.3 of [RFC7854], "Following the common BMP
+   As defined in section 4.6 of [RFC7854], "Following the common BMP
    header and per-peer header is a BGP Update PDU."
 
 5.4.1.  ASN Encoding
@@ -613,7 +613,7 @@ Internet-Draft                 BMP Loc-RIB                    April 2021
 
 
 
-Evens, et al.            Expires 7 October 2021                [Page 11]
+Evens, et al.            Expires 9 October 2021                [Page 11]
 
 Internet-Draft                 BMP Loc-RIB                    April 2021
 
@@ -669,7 +669,7 @@ Internet-Draft                 BMP Loc-RIB                    April 2021
 
 
 
-Evens, et al.            Expires 7 October 2021                [Page 12]
+Evens, et al.            Expires 9 October 2021                [Page 12]
 
 Internet-Draft                 BMP Loc-RIB                    April 2021
 
@@ -705,10 +705,10 @@ Internet-Draft                 BMP Loc-RIB                    April 2021
 7.  Security Considerations
 
    The same considerations as in section 11 of [RFC7854] apply to this
-   document.  Implementations of this protocol SHOULD require monitored
-   routers to establish secure sessions with authorized and trusted
-   monitoring stations.  It is also believed that this document does not
-   add any features that require any additional security considerations.
+   document.  Implementations of this protocol SHOULD require that
+   sessions are only established with authorized and trusted monitoring
+   devices.  It is also believed that this document does not add any
+   additional security considerations.
 
 8.  IANA Considerations
 
@@ -725,7 +725,7 @@ Internet-Draft                 BMP Loc-RIB                    April 2021
 
 
 
-Evens, et al.            Expires 7 October 2021                [Page 13]
+Evens, et al.            Expires 9 October 2021                [Page 13]
 
 Internet-Draft                 BMP Loc-RIB                    April 2021
 
@@ -781,7 +781,7 @@ Internet-Draft                 BMP Loc-RIB                    April 2021
 
 
 
-Evens, et al.            Expires 7 October 2021                [Page 14]
+Evens, et al.            Expires 9 October 2021                [Page 14]
 
 Internet-Draft                 BMP Loc-RIB                    April 2021
 
@@ -837,7 +837,7 @@ Authors' Addresses
 
 
 
-Evens, et al.            Expires 7 October 2021                [Page 15]
+Evens, et al.            Expires 9 October 2021                [Page 15]
 
 Internet-Draft                 BMP Loc-RIB                    April 2021
 
@@ -893,4 +893,4 @@ Internet-Draft                 BMP Loc-RIB                    April 2021
 
 
 
-Evens, et al.            Expires 7 October 2021                [Page 16]
+Evens, et al.            Expires 9 October 2021                [Page 16]
