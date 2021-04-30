@@ -122,8 +122,8 @@ Internet-Draft                 BMP Loc-RIB                    April 2021
    instance Loc-RIB.  It does define in section 8.2 of [RFC7854] locally
    originated routes, but these routes are defined as the routes
    originated into BGP.  For example, as defined by Section 9.4 of
-   [RFC4271].  Loc-RIB includes more than locally originated routes,
-   such as the selected received routes from BGP peers.
+   [RFC4271].  Loc-RIB includes all selected received routes from BGP
+   peers in addition to locally originated routes.
 
    Figure 1 shows the flow of received routes from one or more BGP peers
    into the Loc-RIB.

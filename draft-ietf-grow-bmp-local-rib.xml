@@ -104,8 +104,8 @@
                 <xref target="RFC7854" format="default">section 8.2 of</xref> locally originated routes,
                 but these routes are defined as the routes originated into BGP. For example, as
                 defined by <xref target="RFC4271" format="default">Section 9.4 of</xref>. Loc-RIB
-                includes more than locally originated routes, such as the selected received routes
-                from BGP peers.
+                includes all selected received routes from BGP peers in addition to locally
+                originated routes.                 
                 
       </t>
       <t>
