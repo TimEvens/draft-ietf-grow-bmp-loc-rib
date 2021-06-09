@@ -391,7 +391,7 @@
         <artwork align="center" name="" type="" alt=""><![CDATA[
  0 1 2 3 4 5 6 7
 +-+-+-+-+-+-+-+-+
-| | | | |F| | | |
+|F| | | | | | | |
 +-+-+-+-+-+-+-+-+
 ]]></artwork>
         <ul spacing="normal">
@@ -715,7 +715,7 @@
         </t>
         <ul spacing="normal">
           <li>
-            Flag 4: The F flag indicates that the Loc-RIB is filtered.  This indicates
+            Flag 0: The F flag indicates that the Loc-RIB is filtered.  This indicates
             that the Loc-RIB does not represent the complete routing table.
          </li>
         </ul>
