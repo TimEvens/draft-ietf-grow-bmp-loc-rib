@@ -16,12 +16,12 @@
 <?rfc sortrefs="yes" ?>
 <?rfc compact="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-grow-bmp-local-rib-11" ipr="trust200902" submissionType="IETF" updates="7854" obsoletes="" xml:lang="en" tocInclude="true" tocDepth="4" symRefs="true" sortRefs="true" version="3">
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-grow-bmp-local-rib-12" ipr="trust200902" submissionType="IETF" updates="7854" obsoletes="" xml:lang="en" tocInclude="true" tocDepth="4" symRefs="true" sortRefs="true" version="3">
   <!-- xml2rfc v2v3 conversion 3.3.0 -->
   <front>
     <title abbrev="BMP Loc-RIB">
             Support for Local RIB in BGP Monitoring Protocol (BMP)</title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-grow-bmp-local-rib-11"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-grow-bmp-local-rib-12"/>
     <author fullname="Tim Evens" initials="T" surname="Evens">
       <organization>Cisco Systems</organization>
       <address>
