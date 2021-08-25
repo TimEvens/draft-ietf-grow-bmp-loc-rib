@@ -759,6 +759,13 @@
           </li>
         </ul>
       </section>
+      <section numbered="true" toc="default">
+        <name>Deprecated entries</name>
+        <t>
+	    This document also requests that IANA marks as "deprecated" the F Flag entry in
+	    the "BMP Peer Flags for Peer Types 0 through 2" registry.
+        </t>
+      </section>
     </section>
   </middle>
   <back>
